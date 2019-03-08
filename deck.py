@@ -32,6 +32,12 @@ class Deck:
   def shuffle(self):
     self.deck = self.randMerge(self.deck)
   
+  '''
+  * Much like a regular merge sort, 
+  * break down the problem as much as possible using recursion.
+  * On the way up, however, use random numbers to choose sorting,
+  * rather than using compareTo() or similar
+  '''
   def randMerge(self, d):
     if len(d) <= 1:
       return d
@@ -64,6 +70,7 @@ class Deck:
         mixedDeck.append(c)
     return mixedDeck
   
+  #Print each card in an array-like format for readability
   def printDeck(self):
     pDeck = "["
     for c in self.deck:
@@ -71,6 +78,7 @@ class Deck:
     pDeck = pDeck[:len(pDeck) - 1] + "]"
     print(pDeck)
 
+  #If the deck is not empty, remove the top card from the deck
   def dealCard(self):
     if not self.isEmpty:
       return self.deck.pop(0)
