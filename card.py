@@ -4,9 +4,11 @@ class Card:
     self.suit = suit
     self.isHidden = False
   
+  #Flip this card face-down hiding it from one or more players
   def faceDown(self):
     self.isHidden = True
   
+  #Flip this card face up, revealing it to all players
   def faceUp(self):
     self.isHidden = False
 
