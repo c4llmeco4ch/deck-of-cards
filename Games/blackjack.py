@@ -5,6 +5,7 @@ from card import ../Card
 class BJHand:
     def __init__(self):
         self.reset()
+        self.busted = False
 
     '''
     * @param c: The Card being added to the hand
@@ -16,12 +17,12 @@ class BJHand:
     def addCard(self, c):
         self.hand.append(c)
         for val in self.handValue:
+            if c.value == 1: #deal with Aces counting as 11 first
+                self.handValue.append(val + 11)
             if c.value <= 10:
                 val += c.value
             else:
                 val += 10
-            if c.value == 1:
-                self.handValue.append(val + 11)
         self.numOfCards += 1
     
     '''
@@ -31,10 +32,11 @@ class BJHand:
     def stay(self):
         self.stillIn = False
         best = 0
-        for v in self.handValues:
+        for v in self.handValue:
             if v >= best:
                 best = v
-        self.handValues = best
+        del(v)
+        self.handValue = best
 
     #Return a hand to its default state
     def reset(self):
@@ -52,6 +54,7 @@ class BJHand:
         for val in self.handValue:
             if val > 21:
                 self.handValue.remove(val)
+        del(val)
         if len(self.handValue) <= 0:
             return True
         return False 
@@ -59,9 +62,10 @@ class BJHand:
     
 
 class BJPlayer:
-    def __init__(self):
+    def __init__(self, name):
         self.money = 100
         self.hand = BJHand()
+        self.name = name
 
     '''
     * @param m: The amount of money a player is betting on his hand
@@ -98,5 +102,37 @@ class Dealer:
         for val in self.hand.handValue:
             if val >= 17 and val <= 21:
                 return False
+        del(val)
         return True
 
+playerNumber = -1
+playerList = []
+
+def startGame():
+    dealer = Dealer()
+    while playerNumber <= 0:
+        playerNumber = (int)(prompt("How many players would like a chair at the table?"+
+                                    "\nMax 5"))
+    for i in range(playerNumber):
+        name = prompt("Player " + (str)(i) + ": Choose a name.")
+        playerList.append(BJPlayer(name))
+    del(i)
+
+def dealHands(deck):
+    for round in range(2):
+        for player in playerList:
+            player.addCard(deck.dealCard())
+        dealer.addCard(deck.dealCard())
+    dealer.hand[1].faceDown()
+    del(round, player)
+
+def playerLoop(player):
+    if player.hand.handValue[0] == 21:
+        
+    
+deck = Deck()
+deck.shuffle()
+startGame()
+dealHands(deck)
+
+    
