@@ -16,7 +16,7 @@ class Deck:
     self.isEmpty = False
     self.fillDeck()
   '''
-  
+
   '''
   * Start with a blank deck
   * Fill the deck and place it in new deck order
@@ -25,7 +25,7 @@ class Deck:
     suits = ["H", "C", "D", "S"]
     values = 13
     deck = []
-    for i in range(deck.size/52):
+    for i in range(self.size/52):
       for s in suits:
         if s == "H" or s == "C":
           for v in range(1, values+1):

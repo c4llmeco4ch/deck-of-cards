@@ -116,12 +116,14 @@ playerList = []
 
 def startGame():
     dealer = Dealer()
+    playerNumber = -1
     while playerNumber <= 0:
-        playerNumber = (int)(prompt("How many players would like a chair at the table?"+
-                                    "\nMax 5"))
+        playerNumber = (int)(input("How many players would like a chair at the table?"+
+                                    "\nMax 5 "))
     for i in range(playerNumber):
-        name = prompt("Player " + (str)(i) + ": Choose a name.")
-        playerList.append(BJPlayer(name))
+        pName = input("Player " + (str)(i + 1) + ", choose a name: ")
+        print(pName + " is your name")
+        playerList.append(BJPlayer(pName))
     del(i)
 
 def dealHands(deck):
