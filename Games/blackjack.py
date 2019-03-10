@@ -29,8 +29,7 @@ class BJHand:
     * Set the player's best score, 
     * and pull him out of the dealing process
     '''
-    def stay(self):
-        self.stillIn = False
+    def stand(self):
         best = 0
         for v in self.handValue:
             if v >= best:
@@ -58,6 +57,13 @@ class BJHand:
         if len(self.handValue) <= 0:
             return True
         return False 
+
+    def toString(self):
+        currentHand = "| "
+        for c in self.hand:
+            currentHand += c.toString() + ", "
+        currentHand = currentHand[:len(currentHand) - 2] + "|" 
+        return currentHand
     
     
 
@@ -121,18 +127,49 @@ def startGame():
 def dealHands(deck):
     for round in range(2):
         for player in playerList:
-            player.addCard(deck.dealCard())
-        dealer.addCard(deck.dealCard())
-    dealer.hand[1].faceDown()
+            player.dealCard(deck.dealCard())
+        dealer.dealCard(deck.dealCard())
+    dealer.hand[1].flip()
     del(round, player)
 
-def playerLoop(player):
-    if player.hand.handValue[0] == 21:
-        
+def playerLoop(player, dealer):
+    while player.stillIn:
+        if player.hand.handValue[0] == 21:
+            print("Blackjack! You win!")
+            return
+        isValid == False
+        print("Dealer is showing " + dealer.hand.hand[0].printCard())
+        while not isValid:
+            print(player.name + ": Your Hand is " + player.hand.toString())
+            decision = input("Would you like to hit (\'h\') or stand (\'s\')? ")
+            if decision == "h":
+                player.dealCard(deck.dealCard())
+                if player.hand.areBusted():
+                    player.stillIn = False
+                    return
+                isValid = True
+            elif decision == "s":
+                player.stand()
+                return
+            else:
+                print("Excuse me, sir. This is not a valid move. Try again.")
+
+'''def dealerLoop(dealer):
+    print("Dealer is showing " + dealer.hand.hand[0].printCard())
+    dealer.hand.hand[1].flip()
+    print("Dealer reveals his face-down card: " + dealer.hand.hand[1].printCard())
+    if dealer.hand.handValue[0] == 21:
+        print("Dealer has blackjack!")
+        return -1
+    playing = True
+    while playing:'''
+
+
     
 deck = Deck()
 deck.shuffle()
 startGame()
 dealHands(deck)
-
-    
+for player in playerList:
+    playerLoop(player, dealer)
+#dealerStatus = dealerLoop(dealer)
