@@ -5,16 +5,14 @@ class Card:
     self.isHidden = False
   
   #Flip this card face-down hiding it from one or more players
-  def faceDown(self):
-    self.isHidden = True
-  
-  #Flip this card face up, revealing it to all players
-  def faceUp(self):
-    self.isHidden = False
+  def flip(self):
+    self.isHidden = not self.isHidden
 
   def printCard(self):
-    card = self.toString()
-    print(card)
+    if self.isHidden:
+      print("??")
+    else:
+      print(self.toString())
 
   def toString(self):
     val = self.value
