@@ -9,11 +9,13 @@ class Deck:
     self.isEmpty = False
     self.fillDeck()
 
+  '''
   def __init__(self, size):
     self.deck = []
     self.size = size
     self.isEmpty = False
     self.fillDeck()
+  '''
   
   '''
   * Start with a blank deck
@@ -33,7 +35,7 @@ class Deck:
           for v in range (values,0, -1):
             c = Card(v, s)
             deck.append(c)
-    self.deck = deck
+      self.deck = deck
   #End fillDeck
 
   def shuffle(self):
