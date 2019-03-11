@@ -165,7 +165,12 @@ def dealerLoop(dealer):
         return -1
     playing = True
     while playing:
-        True
+        playing = dealer.decideToHit()
+        if playing:
+            dealer.hand.dealCard(deck.dealCard())
+            if dealer.hand.areBusted():
+                return 0
+    return dealer.hand.stand()
 
 
    
@@ -176,3 +181,9 @@ dealHands(deck)
 for player in playerList:
     playerLoop(player, dealer)
 dealerStatus = dealerLoop(dealer)
+if dealerStatus == 0:
+    #All players who are still in win
+elif dealerStatus != -1:
+    #Calculate who wins between dealers and players that are still in
+else:
+    #Dealer hit blackjack, all players lose except those with BJ
