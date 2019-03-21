@@ -16,13 +16,14 @@ class BJHand:
     '''
     def addCard(self, c):
         self.hand.append(c)
-        for val in self.handValue:
+        size = len(self.handValue)
+        for pos in range(size):
             if c.value == 1: #deal with Aces counting as 11 first
-                self.handValue.append(val + 11)
+                self.handValue.append(self.handValue[pos] + 11)
             if c.value <= 10:
-                val += c.value
+                self.handValue[pos] += c.value
             else:
-                val += 10
+                self.handValue[pos] += 10
         self.numOfCards += 1
     
     '''
@@ -42,7 +43,7 @@ class BJHand:
         self.hand = []
         self.handValue = [0]
         self.numOfCards = 0
-        self.stillIn = False
+        self.stillIn = True
 
     '''
     * Iterate through each possible hand value in the player's hand
@@ -85,6 +86,7 @@ class BJPlayer:
         self.money = 100
         self.hand = BJHand()
         self.name = name
+        self.bet = 0
 
     '''
     * @param m: The amount of money a player is betting on his hand
@@ -96,6 +98,7 @@ class BJPlayer:
             return False
         else:
             self.money -= m
+            self.bet = m
     
     '''
     * @param m: The amount of money a player wins from a particular hand
@@ -143,48 +146,51 @@ def dealHands(deck):
     for round in range(2):
         for player in playerList:
             player.dealCard(deck.dealCard())
-        dealer.dealCard(deck.dealCard())
-    dealer.hand[1].flip()
+        dealer.hand.addCard(deck.dealCard())
+    dealer.hand.hand[1].flip()
     del(round, player)
 
 def playerLoop(player):
-    while player.stillIn:
-        if player.hand.handValue[0] == 21:
+    while player.hand.stillIn:
+        if len(player.hand.handValue) == 2 and player.hand.handValue[1] == 21:
             print("Blackjack! You win!")
             return
-        isValid == False
-        print("Dealer is showing " + dealer.hand.hand[0].printCard())
+        isValid = False
+        print("Dealer is showing " + dealer.hand.hand[0].toString())
         while not isValid:
             print(player.name + ": Your Hand is " + player.hand.toString())
             decision = input("Would you like to hit (\'h\') or stand (\'s\')? ")
             if decision == "h":
                 player.dealCard(deck.dealCard())
                 if player.hand.areBusted():
-                    player.stillIn = False
+                    player.hand.stillIn = False
                     return
                 isValid = True
             elif decision == "s":
-                player.stand()
+                player.hand.stand()
                 return
             else:
                 print("Excuse me, sir. This is not a valid move. Try again.")
 
 def dealerLoop():
-    print("Dealer is showing " + dealer.hand.hand[0].printCard())
+    print("Dealer is showing " + dealer.hand.hand[0].toString())
     dealer.hand.hand[1].flip()
-    print("Dealer reveals his face-down card: " + dealer.hand.hand[1].printCard())
-    if dealer.hand.handValue[0] == 21:
+    print("Dealer reveals his face-down card: " + dealer.hand.hand[1].toString())
+    if len(dealer.hand.handValue) == 2 and dealer.hand.handValue[1] == 21:
         print("Dealer has blackjack!")
         return -1
     playing = True
     while playing:
         playing = dealer.decideToHit()
         if playing:
-            dealer.hand.dealCard(deck.dealCard())
+            dealer.hand.addCard(deck.dealCard())
+            print("Dealer now has " + dealer.hand.toString())
             if dealer.hand.areBusted():
+                print("Dealer busted!")
                 return 0
-        print("Dealer now has " + dealer.hand.toString())
-    return dealer.hand.stand()
+    dealer.hand.stand()
+    print("Dealer stands at " + dealer.hand.handValue)
+    return dealer.hand.handValue
 
 
    
@@ -198,19 +204,20 @@ dealerStatus = dealerLoop()
 if dealerStatus == 0:
     #All players who are still in win
     for player in playerList:
-        if player.stillIn:
+        if player.hand.stillIn:
+            player.receiveWinnings(player.bet * 2)
             print(player.name + " wins!")
     del(player)
 elif dealerStatus == -1:
     #Dealer hit blackjack, all players lose except those with BJ
     for player in playerList:
-        if player.stillIn:
+        if player.hand.stillIn:
             print("Sorry, " + player.name + ": dealer's blackjack means you lose.")
     del(player)
 else:
     #Calculate who wins between dealers and players that are still in
     for playing in playerList:
-        if player.stillIn:
+        if player.hand.stillIn:
             winner = player.hand.compareTo(dealer.hand)
             if winner == 1:
                 player.receiveWinnings(player.bet * 2)
