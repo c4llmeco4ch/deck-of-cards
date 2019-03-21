@@ -65,6 +65,19 @@ class BJHand:
         currentHand = currentHand[:len(currentHand) - 2] + "|" 
         return currentHand
     
+    '''
+    * @param altHand: The other player's hand we are comparing 'self' to
+    * @return 1: If self's value > altHand's value
+    * @return 0: If self's value == altHand's value
+    * @return -1: If self's value < altHand's value
+    '''
+    def compareTo(self, altHand):
+        if self.handValue > altHand.handValue:
+            return 1
+        elif self.handValue == altHand.handValue:
+            return 0
+        else:
+            return -1
     
 
 class BJPlayer:
@@ -170,6 +183,7 @@ def dealerLoop(dealer):
             dealer.hand.dealCard(deck.dealCard())
             if dealer.hand.areBusted():
                 return 0
+        print("Dealer now has " + dealer.hand.toString())
     return dealer.hand.stand()
 
 
@@ -183,7 +197,26 @@ for player in playerList:
 dealerStatus = dealerLoop(dealer)
 if dealerStatus == 0:
     #All players who are still in win
-elif dealerStatus != -1:
-    #Calculate who wins between dealers and players that are still in
-else:
+    for player in playerList:
+        if player.stillIn:
+            print(player.name + " wins!")
+    del(player)
+elif dealerStatus == -1:
     #Dealer hit blackjack, all players lose except those with BJ
+    for player in playerList:
+        if player.stillIn:
+            print("Sorry, " + player.name + ": dealer's blackjack means you lose.")
+    del(player)
+else:
+    #Calculate who wins between dealers and players that are still in
+    for playing in playerList:
+        if player.stillIn:
+            winner = player.hand.compareTo(dealer.hand)
+            if winner == 1:
+                player.receiveWinnings(player.bet * 2)
+                print("Congrats, " + player.name + ", you win $" + (str)(player.bet * 2))
+            elif winner == 0:
+                player.receiveWinnings(player.bet)
+                print(player.name + ": You pushed and have received your bet back.")
+            
+
