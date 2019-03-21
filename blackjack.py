@@ -126,9 +126,9 @@ class Dealer:
 
 playerNumber = -1
 playerList = []
+dealer = Dealer()
 
 def startGame():
-    dealer = Dealer()
     playerNumber = -1
     while playerNumber <= 0:
         playerNumber = (int)(input("How many players would like a chair at the table?"+
@@ -147,7 +147,7 @@ def dealHands(deck):
     dealer.hand[1].flip()
     del(round, player)
 
-def playerLoop(player, dealer):
+def playerLoop(player):
     while player.stillIn:
         if player.hand.handValue[0] == 21:
             print("Blackjack! You win!")
@@ -169,7 +169,7 @@ def playerLoop(player, dealer):
             else:
                 print("Excuse me, sir. This is not a valid move. Try again.")
 
-def dealerLoop(dealer):
+def dealerLoop():
     print("Dealer is showing " + dealer.hand.hand[0].printCard())
     dealer.hand.hand[1].flip()
     print("Dealer reveals his face-down card: " + dealer.hand.hand[1].printCard())
@@ -193,8 +193,8 @@ deck.shuffle()
 startGame()
 dealHands(deck)
 for player in playerList:
-    playerLoop(player, dealer)
-dealerStatus = dealerLoop(dealer)
+    playerLoop(player)
+dealerStatus = dealerLoop()
 if dealerStatus == 0:
     #All players who are still in win
     for player in playerList:
