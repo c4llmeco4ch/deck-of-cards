@@ -22,6 +22,8 @@ class Deck:
   * Fill the deck and place it in new deck order
   '''
   def fillDeck(self):
+    self.isEmpty = False
+    self.size = 52
     suits = ["H", "C", "D", "S"]
     values = 13
     deck = []
@@ -90,9 +92,10 @@ class Deck:
   #If the deck is not empty, remove the top card from the deck
   def dealCard(self):
     if not self.isEmpty:
-      return self.deck.pop(0)
-      if len(deck) == 0:
+      self.size -= 1
+      if self.size == 0:
         self.isEmpty = True
+      return self.deck.pop(0)
     else:
       print("No cards in the deck to deal")
       return None
