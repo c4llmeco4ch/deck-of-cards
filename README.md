@@ -13,3 +13,5 @@ TODO:
 * Create hand.py base class, which BJHand extends
 
 * Create player base case
+
+* Add unit tests
