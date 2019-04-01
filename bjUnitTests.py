@@ -25,3 +25,32 @@ class TestAreBusted(unittest.TestCase):
         hand.addCard(Card(5, "S"))
         hand.addCard(Card(6, "C"))
         self.assertFalse(hand.areBusted())
+
+    def testLongBustedHand(self):
+        hand = BJHand()
+        hand.addCard(Card(2, "H"))
+        hand.addCard(Card(3, "S"))
+        hand.addCard(Card(5, "C"))
+        hand.addCard(Card(1, "H"))
+        hand.addCard(Card(1, "D"))
+        hand.addCard(Card(5, "D"))
+        hand.addCard(Card(4, "S"))
+        hand.addCard(Card(1, "S"))
+        self.assertTrue(hand.areBusted())
+    
+    def testLongSafeHand(self):
+        hand = BJHand()
+        hand.addCard(Card(2, "H"))
+        hand.addCard(Card(2, "S"))
+        hand.addCard(Card(7, "C"))
+        hand.addCard(Card(1, "H"))
+        hand.addCard(Card(1, "D"))
+        hand.addCard(Card(5, "D"))
+        hand.addCard(Card(3, "S"))
+        self.assertFalse(hand.areBusted())
+
+    def testBlackJack(self):
+        hand = BJHand()
+        hand.addCard(Card(1, "S"))
+        hand.addCard(Card(12, "H"))
+        self.assertFalse(hand.areBusted())
