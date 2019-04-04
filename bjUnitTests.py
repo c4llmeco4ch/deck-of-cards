@@ -54,3 +54,45 @@ class TestAreBusted(unittest.TestCase):
         hand.addCard(Card(1, "S"))
         hand.addCard(Card(12, "H"))
         self.assertFalse(hand.areBusted())
+
+class TestDealCardsFromDeck(unittest.TestCase):
+
+    def testNoShuffleDeal(self):
+        #TODO: create deck and deal the top card
+        return None
+    
+    def testEmptyDeck(self):
+        return None
+
+    def testLastCard(self):
+        #TODO: Deal the last card in a deck. Check that isEmpty is now false
+        return None
+
+class TestStanding(unittest.TestCase):
+
+    def testDualAces(self):
+        hand = BJHand()
+        hand.addCard(Card(1, "S"))
+        hand.addCard(Card(1, "H"))
+        self.assertEqual(12, hand.stand(), "Two aces should equal 12, but don't")
+
+    def testFourAces(self):
+        hand = BJHand()
+        hand.addCard(Card(1, "S"))
+        hand.addCard(Card(1, "H"))
+        hand.addCard(Card(1, "C"))
+        hand.addCard(Card(1, "D"))
+        self.assertEqual(14, hand.stand(), "Four aces should equal 14, but don't")
+
+    def testAceAsEleven(self):
+        hand = BJHand()
+        hand.addCard(Card(1, "D"))
+        hand.addCard(Card(2, "S"))
+        hand.addCard(Card(3, "C"))
+        self.assertEqual(16, hand.stand(), "5 + 11 <= 21, so Ace should count as 11")
+    
+    def testBlackJack(self):
+        hand = BJHand()
+        hand.addCard(Card(13, "H"))
+        hand.addCard(Card(1, "D"))
+        self.assertEqual(21, hand.stand(), "Blackjack returns 21")
