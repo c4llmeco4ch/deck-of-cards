@@ -62,6 +62,8 @@ class TestDealCardsFromDeck(unittest.TestCase):
         answer = d.dealCard()
         self.assertEqual(answer.value, 1)
         self.assertEqual(answer.suit, "H")
+        self.assertFalse(d.isEmpty)
+        self.assertEqual(d.size, 51)
 
     def testLastCard(self):
         d = Deck()
