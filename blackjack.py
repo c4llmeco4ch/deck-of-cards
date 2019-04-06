@@ -94,7 +94,7 @@ class BJPlayer:
     * Otherwise, subtract that amount of money from the player's account
     '''
     def placeBet(self, m):
-        if self.m > self.money:
+        if m > self.money:
             return False
         else:
             self.money -= m
