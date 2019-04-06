@@ -58,15 +58,24 @@ class TestAreBusted(unittest.TestCase):
 class TestDealCardsFromDeck(unittest.TestCase):
 
     def testNoShuffleDeal(self):
-        #TODO: create deck and deal the top card
-        return None
-    
-    def testEmptyDeck(self):
-        return None
+        d = Deck()
+        answer = d.dealCard()
+        self.assertEqual(answer.value, 1)
+        self.assertEqual(answer.suit, "H")
 
     def testLastCard(self):
-        #TODO: Deal the last card in a deck. Check that isEmpty is now false
-        return None
+        d = Deck()
+        for i in range(len(d.deck) - 1):
+            d.dealCard()
+        self.assertFalse(d.isEmpty)
+        d.dealCard()
+        self.assertTrue(d.isEmpty)
+        self.assertIsNone(d.dealCard())
+
+    def testShuffleMaintainsSize(self):
+        d = Deck()
+        d.shuffle()
+        self.assertEqual(d.size, 52)
 
 class TestStanding(unittest.TestCase):
 
