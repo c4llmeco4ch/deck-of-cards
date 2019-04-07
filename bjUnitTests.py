@@ -83,3 +83,17 @@ class TestStanding(unittest.TestCase):
         hand.addCard(Card(13, "H"))
         hand.addCard(Card(1, "D"))
         self.assertEqual(21, hand.stand(), "Blackjack returns 21")
+
+class TestBets(unittest.TestCase):
+
+    def TestNegativeBet(self):
+        bjp = BJPlayer("Connor")
+        self.assertFalse(bjp.placeBet(-5))
+
+    def TestTooHighBet(self):
+        bjp = BJPlayer("Me")
+        self.assertFalse(bjp.placeBet(101))
+
+    def TestExactHighBet(self):
+        bjp = BJPlayer("Me")
+        self.assertTrue(bjp.placeBet(bjp.money))

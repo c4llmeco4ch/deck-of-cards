@@ -95,10 +95,15 @@ class BJPlayer:
     '''
     def placeBet(self, m):
         if m > self.money:
+            print("You do not have that much money. Try again")
+            return False
+        elif m <= 0:
+            print("Please place a bet greater than $0.")
             return False
         else:
             self.money -= m
             self.bet = m
+            return True
     
     '''
     * @param m: The amount of money a player wins from a particular hand
@@ -141,6 +146,15 @@ def startGame():
         print(pName + " is your name")
         playerList.append(BJPlayer(pName))
     del(i)
+
+def acceptBets():
+    for player in playerList:
+        valid = False
+        while not valid:
+            print(player.name + ": You have $" + str(player.money) + "." )
+            amount = input("How much would you like to bet on this hand?")
+            valid = player.placeBet(amount)
+
 
 def dealHands(deck):
     for round in range(2):
@@ -218,6 +232,7 @@ def checkWinner(player, dealer, dealerStatus):
 deck = Deck()
 deck.shuffle()
 startGame()
+acceptBets()
 dealHands(deck)
 for player in playerList:
     playerLoop(player)
