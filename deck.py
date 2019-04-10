@@ -27,17 +27,16 @@ class Deck:
     suits = ["H", "C", "D", "S"]
     values = 13
     deck = []
-    for i in range(self.size/52):
-      for s in suits:
-        if s == "H" or s == "C":
-          for v in range(1, values+1):
-            c = Card(v, s)
-            deck.append(c)
-        else:
-          for v in range (values,0, -1):
-            c = Card(v, s)
-            deck.append(c)
-      self.deck = deck
+    for s in suits:
+      if s == "H" or s == "C":
+        for v in range(1, values+1):
+          c = Card(v, s)
+          deck.append(c)
+      else:
+        for v in range (values,0, -1):
+          c = Card(v, s)
+          deck.append(c)
+    self.deck = deck
   #End fillDeck
 
   def shuffle(self):

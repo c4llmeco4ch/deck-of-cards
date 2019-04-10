@@ -152,7 +152,7 @@ def acceptBets():
         valid = False
         while not valid:
             print(player.name + ": You have $" + str(player.money) + "." )
-            amount = input("How much would you like to bet on this hand?")
+            amount = (int)(input("How much would you like to bet on this hand?"))
             valid = player.placeBet(amount)
 
 
