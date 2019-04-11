@@ -152,7 +152,7 @@ def acceptBets():
         valid = False
         while not valid:
             print(player.name + ": You have $" + str(player.money) + "." )
-            amount = (int)(input("How much would you like to bet on this hand?"))
+            amount = int(input("How much would you like to bet on this hand?"))
             valid = player.placeBet(amount)
 
 
@@ -219,7 +219,7 @@ def checkWinner(player, dealer, dealerStatus):
         winner = player.hand.compareTo(dealer.hand)
         if winner == 1:
             player.receiveWinnings(player.bet * 2)
-            print("Congrats, " + player.name + ", you win $" + (str)(player.bet * 2))
+            print("Congrats, " + player.name + ", you win $" + (str)(player.bet))
         elif winner == 0:
             player.receiveWinnings(player.bet)
             print(player.name + ": You pushed and have received your bet back.")
