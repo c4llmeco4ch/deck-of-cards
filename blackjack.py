@@ -246,7 +246,8 @@ while arePlaying:
         if player.hand.stillIn:
             checkWinner(player, dealer, dealerStatus)
     answer = input("Continue playing? ")
-    continue if answer == "yes" or answer == "y" else arePlaying = False
+    if not(answer == "yes" or answer == "y"):
+        arePlaying = False
 
             
 
