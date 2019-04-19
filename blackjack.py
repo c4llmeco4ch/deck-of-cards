@@ -166,10 +166,11 @@ def dealHands(deck):
 
 def playerLoop(player):
     while player.hand.stillIn:
-        if len(player.hand.hand) == 2 and player.hand.handValue[1] == 21:
-            print("Blackjack! You win!")
-            player.hand.handValue = 21
-            return
+        if len(player.hand.hand) == 2:
+            if len(player.hand.handValue) == 2 and player.hand.handValue[1] == 21:
+                print("Blackjack! You win!")
+                player.hand.handValue = 21
+                return
         isValid = False
         print("Dealer is showing " + dealer.hand.hand[0].toString())
         while not isValid:
@@ -192,9 +193,10 @@ def dealerLoop():
     print("Dealer is showing " + dealer.hand.hand[0].toString())
     dealer.hand.hand[1].flip()
     print("Dealer reveals his face-down card: " + dealer.hand.hand[1].toString())
-    if len(dealer.hand.hand) == 2 and dealer.hand.handValue[1] == 21:
-        print("Dealer has blackjack!")
-        return -1
+    if len(dealer.hand.hand) == 2:
+        if len(dealer.hand.handValue) == 2 and dealer.hand.handValue[1] == 21:
+            print("Dealer has blackjack!")
+            return -1
     playing = True
     while playing:
         playing = dealer.decideToHit()
