@@ -235,14 +235,18 @@ def checkWinner(player, dealer, dealerStatus):
 deck = Deck()
 deck.shuffle()
 startGame()
-acceptBets()
-dealHands(deck)
-for player in playerList:
-    playerLoop(player)
-dealerStatus = dealerLoop()
-for player in playerList:
-    if player.hand.stillIn:
-        checkWinner(player, dealer, dealerStatus)
+arePlaying = True
+while arePlaying:
+    acceptBets()
+    dealHands(deck)
+    for player in playerList:
+        playerLoop(player)
+    dealerStatus = dealerLoop()
+    for player in playerList:
+        if player.hand.stillIn:
+            checkWinner(player, dealer, dealerStatus)
+    answer = input("Continue playing? ")
+    continue if answer == "yes" or answer == "y" else arePlaying = False
 
             
 
