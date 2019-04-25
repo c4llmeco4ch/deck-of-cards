@@ -248,6 +248,3 @@ while arePlaying:
     answer = input("Continue playing? ")
     if not(answer == "yes" or answer == "y"):
         arePlaying = False
-
-            
-
