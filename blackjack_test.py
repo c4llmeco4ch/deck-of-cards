@@ -61,7 +61,9 @@ class TestStanding(unittest.TestCase):
         hand = BJHand()
         hand.addCard(Card(1, "S"))
         hand.addCard(Card(1, "H"))
-        self.assertEqual(12, hand.stand(), "Two aces should equal 12, but don't")
+        hand.areBusted()
+        hand.stand()
+        self.assertEqual(12, hand.handValue, "Two aces should equal 12, but don't")
 
     def test_FourAces(self):
         hand = BJHand()
@@ -69,20 +71,27 @@ class TestStanding(unittest.TestCase):
         hand.addCard(Card(1, "H"))
         hand.addCard(Card(1, "C"))
         hand.addCard(Card(1, "D"))
-        self.assertEqual(14, hand.stand(), "Four aces should equal 14, but don't")
+        hand.areBusted()
+        hand.stand()
+        self.assertEqual(14, hand.handValue, "Four aces should equal 14, but don't")
 
     def test_AceAsEleven(self):
         hand = BJHand()
+        print("This hand has a value of: " + str(hand.handValue[0]))
         hand.addCard(Card(1, "D"))
         hand.addCard(Card(2, "S"))
         hand.addCard(Card(3, "C"))
-        self.assertEqual(16, hand.stand(), "5 + 11 <= 21, so Ace should count as 11")
+        hand.areBusted()
+        hand.stand()
+        self.assertEqual(16, hand.handValue, "5 + 11 <= 21, so Ace should count as 11")
     
     def test_BlackJack(self):
         hand = BJHand()
         hand.addCard(Card(13, "H"))
         hand.addCard(Card(1, "D"))
-        self.assertEqual(21, hand.stand(), "Blackjack returns 21")
+        hand.areBusted()
+        hand.stand()
+        self.assertEqual(21, hand.handValue, "Blackjack returns 21")
 
 class TestBets(unittest.TestCase):
 

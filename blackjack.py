@@ -51,10 +51,12 @@ class BJHand:
     * remove it from the list
     '''
     def areBusted(self):
+        nVal = []
         for val in self.handValue:
-            if val > 21:
-                self.handValue.remove(val)
+            if val <= 21:
+                nVal.append(val)
         del(val)
+        self.handValue = nVal
         if len(self.handValue) <= 0:
             return True
         return False 
@@ -164,7 +166,7 @@ def dealHands(deck):
     dealer.hand.hand[1].flip()
     del(round, player)
 
-def playerLoop(player):
+def playerLoop(player, deck):
     while player.hand.stillIn:
         if len(player.hand.hand) == 2:
             if len(player.hand.handValue) == 2 and player.hand.handValue[1] == 21:
@@ -189,7 +191,7 @@ def playerLoop(player):
             else:
                 print("Excuse me, sir. This is not a valid move. Try again.")
 
-def dealerLoop():
+def dealerLoop(deck):
     print("Dealer is showing " + dealer.hand.hand[0].toString())
     dealer.hand.hand[1].flip()
     print("Dealer reveals his face-down card: " + dealer.hand.hand[1].toString())
@@ -231,20 +233,20 @@ def checkWinner(player, dealer, dealerStatus):
                     str(player.hand.handValue) + " with " + 
                     str(dealer.hand.handValue) + ". Better luck next time.")
     
-   
-deck = Deck()
-deck.shuffle()
-startGame()
-arePlaying = True
-while arePlaying:
-    acceptBets()
-    dealHands(deck)
-    for player in playerList:
-        playerLoop(player)
-    dealerStatus = dealerLoop()
-    for player in playerList:
-        if player.hand.stillIn:
-            checkWinner(player, dealer, dealerStatus)
-    answer = input("Continue playing? ")
-    if not(answer == "yes" or answer == "y"):
-        arePlaying = False
+def go():
+    deck = Deck()
+    deck.shuffle()
+    startGame()
+    arePlaying = True
+    while arePlaying:
+        acceptBets()
+        dealHands(deck)
+        for player in playerList:
+            playerLoop(player, deck)
+        dealerStatus = dealerLoop(deck)
+        for player in playerList:
+            if player.hand.stillIn:
+                checkWinner(player, dealer, dealerStatus)
+        answer = input("Continue playing? ")
+        if not(answer == "yes" or answer == "y"):
+            arePlaying = False
