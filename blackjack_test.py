@@ -1,7 +1,7 @@
 import unittest
-from deck import Deck
-from card import Card
-from blackjack import *
+from .deck import Deck
+from .card import Card
+from .blackjack import *
 
 class TestAreBusted(unittest.TestCase):
 
