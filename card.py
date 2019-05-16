@@ -36,9 +36,9 @@ class Card:
   def compareTo(self, c):
     if c.type != Card:
       raise ValueError("The passed object is not a card")
-    elif c.value > self.value():
-      return -1
-    elif c.value < self.value():
+    elif c.value > self.value:
+          return -1
+    elif c.value < self.value:
       return 1
     else: 
       return 0
