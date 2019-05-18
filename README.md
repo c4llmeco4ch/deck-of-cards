@@ -1,5 +1,5 @@
 # deck-of-cards
-May 1, 2019
+May 18, 2019
 TODO: 
 
 * Add functionality for:

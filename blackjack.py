@@ -250,3 +250,7 @@ def go():
         answer = input("Continue playing? ")
         if not(answer == "yes" or answer == "y"):
             arePlaying = False
+        else:
+            for p in playerList:
+                p.hand.reset()
+            dealer.hand.reset()
