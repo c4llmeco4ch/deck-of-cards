@@ -1,5 +1,4 @@
 from blackjack import *
 from card import Card
 from deck import Deck
-
-go()
+import __main__
