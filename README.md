@@ -1,12 +1,11 @@
 # deck-of-cards
-May 18, 2019
+May 27, 2019
 TODO: 
 
 * Add functionality for:
     - Split
     - Double down
     - Betting/payout rates/insurance
-    - Auto-kick a player if he has $0
 
 * Move blackjack.py to new folder, so games are separate from
     the base cards

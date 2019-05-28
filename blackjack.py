@@ -154,13 +154,14 @@ def acceptBets():
         valid = False
         while not valid:
             print(player.name + ": You have $" + str(player.money) + "." )
-            amount = int(input("How much would you like to bet on this hand?"))
+            amount = int(input("How much would you like to bet on this hand? "))
             valid = player.placeBet(amount)
 
 
 def dealHands(deck):
     for round in range(2):
         for player in playerList:
+            print("Dealing to " + player.name)
             player.dealCard(deck.dealCard())
         dealer.hand.addCard(deck.dealCard())
     dealer.hand.hand[1].flip()
@@ -251,6 +252,19 @@ def go():
         if not(answer == "yes" or answer == "y"):
             arePlaying = False
         else:
+            playersToRemove = []
             for p in playerList:
-                p.hand.reset()
+                print(p.name + " has $" + str(p.money))
+                if p.money <= 0:
+                    print("Sorry, " + p.name + ", you are out of money. Goodbye")
+                    playersToRemove.append(p)
+                else:
+                    p.hand.reset()
+                    print(p.name + "\'s hand has been reset")
+            for out in playersToRemove:
+                playerList.remove(out)
             dealer.hand.reset()
+            if len(playerList) == 0:
+                print("It seems all players are out. Goodbye")
+                arePlaying = False
+        
