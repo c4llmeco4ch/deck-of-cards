@@ -1,5 +1,8 @@
 # deck-of-cards
-May 27, 2019
+June 29, 2019
+
+To Run: Simply run "python ." or "python __main__.py" from the command line.
+
 TODO: 
 
 * Add functionality for:
