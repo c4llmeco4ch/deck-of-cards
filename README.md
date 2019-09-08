@@ -1,7 +1,7 @@
 # deck-of-cards
-June 29, 2019
+September 8, 2019
 
-To Run: Simply run "python ." or "python __main__.py" from the command line.
+To Run: Simply run "python ." or "python \_\_main\_\_.py" from the command line.
 
 TODO: 
 
