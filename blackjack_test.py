@@ -106,3 +106,23 @@ class TestBets(unittest.TestCase):
     def test_ExactHighBet(self):
         bjp = BJPlayer("Me")
         self.assertTrue(bjp.placeBet(bjp.money))
+
+class TestSplitting(unittest.TestCase):
+
+    def test_CantSplit(self):
+        oneHand = BJHand()
+        self.assertFalse(oneHand.canSplit())
+        oneHand.addCard(Card(5,"H"))
+        oneHand.addCard(Card(10, "S"))
+        self.assertFalse(oneHand.canSplit())
+        twoHand = BJHand()
+        twoHand.addCard(Card(3, "C"))
+        twoHand.addCard(Card(3, "H"))
+        twoHand.addCard(Card(3, "S"))
+        self.assertFalse(oneHand.canSplit())
+    
+    def test_CanSplit(self):
+        oneHand = BJHand()
+        oneHand.addCard(Card(8, "C"))
+        oneHand.addCard(Card(8, "H"))
+        self.assertTrue(oneHand.canSplit())

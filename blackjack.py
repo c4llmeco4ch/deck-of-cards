@@ -1,6 +1,14 @@
 from deck import Deck
 from card import Card
 
+'''
+* TODO:
+* For splitting:
+*   Update player game loop to account for multiple hands
+*   Add/updated addCard function to add to specific hand
+*   Account for bets on multiple hands
+*   
+'''
 
 class BJHand:
     def __init__(self):
@@ -26,6 +34,19 @@ class BJHand:
                 self.handValue[pos] += 10
         self.numOfCards += 1
     
+    '''
+    * Determine whether to allow a hand split on the current hand
+    * Rules:
+    * Can only split if hand size is 2
+    * Can only split if both cards' values are the same
+    * @return Whether the hand can be split
+    '''
+    def canSplit(self):
+        if len(self.hand) != 2:
+            return False
+        return self.hand[0].compareTo(self.hand[1]) == 0
+
+
     '''
     * Set the player's best score, 
     * and pull him out of the dealing process
@@ -114,7 +135,10 @@ class BJPlayer:
     def receiveWinnings(self, m):
         self.money += m
     
-    #Player is dealt a card and adds it to his hand
+    '''
+    * Player is dealt a card and adds it to his hand
+    * @param: The card to be added
+    '''
     def dealCard(self, c):
         self.hand.addCard(c)
     
@@ -267,4 +291,3 @@ def go():
             if len(playerList) == 0:
                 print("It seems all players are out. Goodbye")
                 arePlaying = False
-        
