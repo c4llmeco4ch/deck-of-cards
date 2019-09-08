@@ -34,7 +34,7 @@ class Card:
   * Take 2 cards and evaluate which is a higher card
   '''
   def compareTo(self, c):
-    if c.type != Card:
+    if not isinstance(c, Card):
       raise ValueError("The passed object is not a card")
     elif c.value > self.value:
           return -1
