@@ -1,5 +1,5 @@
 # deck-of-cards
-September 8, 2019
+September 10, 2019
 
 To Run: Simply run "python ." or "python \_\_main\_\_.py" from the command line.
 
@@ -18,3 +18,5 @@ TODO:
 * Create player base class, which BJPlayer extends
 
 * Expand unit tests
+
+* Update documentation using Sphinx
