@@ -107,7 +107,8 @@ class BJHand:
 class BJPlayer:
     def __init__(self, name):
         self.money = 100
-        self.hand = BJHand()
+        self.hand = BJHand() #TODO: Turn this into a list 
+                             #      and update calls accordingly in preparation for split
         self.name = name
         self.bet = 0
 
@@ -125,7 +126,7 @@ class BJPlayer:
             return False
         else:
             self.money -= m
-            self.bet = m
+            self.bet = m #might need to make this '+='. If so, need to reset bets after each hand
             return True
     
     '''
@@ -141,6 +142,20 @@ class BJPlayer:
     '''
     def dealCard(self, c):
         self.hand.addCard(c)
+
+    '''
+    * Turn one hand into multiple hands
+    * @param card1: The card to be added to the first hand
+    * @param card2: The card to be added to the second hand
+    '''
+    def splitHand(self, card1, card2):
+        firstCard = self.hand.hand[0]
+        secondCard = self.hand.hand[1]
+        self.hand[0] = BJHand().addCard(firstCard)
+        self.hand[0].addCard(card1)
+        self.hand.append(BJHand().addCard(secondCard))
+        self.hand[1].addCard(card2)
+
     
 class Dealer:
     def __init__(self):
@@ -192,6 +207,7 @@ def dealHands(deck):
     del(round, player)
 
 def playerLoop(player, deck):
+    #TODO: For each hand
     while player.hand.stillIn:
         if len(player.hand.hand) == 2:
             if len(player.hand.handValue) == 2 and player.hand.handValue[1] == 21:
@@ -202,7 +218,7 @@ def playerLoop(player, deck):
         print("Dealer is showing " + dealer.hand.hand[0].toString())
         while not isValid:
             print(player.name + ": Your Hand is " + player.hand.toString())
-            decision = input("Would you like to hit (\'h\') or stand (\'s\')? ")
+            decision = input("Would you like to hit (\'h\') or stand (\'s\')? ") #TODO: Incorporate splitting
             if decision == "h":
                 player.dealCard(deck.dealCard())
                 if player.hand.areBusted():
