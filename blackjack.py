@@ -96,7 +96,7 @@ class BJHand:
     * @return -1: If self's value < altHand's value
     '''
     def compareTo(self, altHand):
-        if self.handValue > altHand.handValue:
+        if self.handValue > altHand.handValue or self.handValue == -1:
             return 1
         elif self.handValue == altHand.handValue:
             return 0
@@ -107,8 +107,8 @@ class BJHand:
 class BJPlayer:
     def __init__(self, name):
         self.money = 100
-        self.hand = BJHand() #TODO: Turn this into a list 
-                             #      and update calls accordingly in preparation for split
+        self.hand = [BJHand()] #TODO: Turn this into a list 
+                               #      and update calls accordingly in preparation for split
         self.name = name
         self.bet = 0
 
@@ -140,21 +140,29 @@ class BJPlayer:
     * Player is dealt a card and adds it to his hand
     * @param: The card to be added
     '''
-    def dealCard(self, c):
-        self.hand.addCard(c)
+    def dealCard(self, c, handNumber):
+        self.hand[handNumber].addCard(c)
 
     '''
     * Turn one hand into multiple hands
     * @param card1: The card to be added to the first hand
     * @param card2: The card to be added to the second hand
     '''
-    def splitHand(self, card1, card2):
-        firstCard = self.hand.hand[0]
-        secondCard = self.hand.hand[1]
-        self.hand[0] = BJHand().addCard(firstCard)
-        self.hand[0].addCard(card1)
-        self.hand.append(BJHand().addCard(secondCard))
-        self.hand[1].addCard(card2)
+    def splitHand(self, card1, card2, handNumber):
+        firstCard = self.hand[handNumber].hand[0]
+        secondCard = self.hand[handNumber].hand[1]
+        self.hand[handNumber] = BJHand()
+        self.dealCard(firstCard,handNumber)
+        self.dealCard(card1, handNumber)
+        self.hand.append(BJHand())
+        self.dealCard(secondCard,len(self.hand) - 1)
+        self.dealCard(card2, len(self.hand) - 1)
+
+    '''
+    * Reset the player's hand in case they have multiple from splits.
+    '''
+    def reset(self):
+        self.hand = [BJHand()]
 
     
 class Dealer:
@@ -196,42 +204,69 @@ def acceptBets():
             amount = int(input("How much would you like to bet on this hand? "))
             valid = player.placeBet(amount)
 
-
+'''
+* Starting with the players then moving to the dealer,
+* Deal each person a card
+* Then repeat the process
+* @param deck: the deck of cards from which we are dealing
+'''
 def dealHands(deck):
     for round in range(2):
         for player in playerList:
             print("Dealing to " + player.name)
-            player.dealCard(deck.dealCard())
+            player.dealCard(deck.dealCard(),0)
         dealer.hand.addCard(deck.dealCard())
     dealer.hand.hand[1].flip()
     del(round, player)
 
 def playerLoop(player, deck):
-    #TODO: For each hand
-    while player.hand.stillIn:
-        if len(player.hand.hand) == 2:
-            if len(player.hand.handValue) == 2 and player.hand.handValue[1] == 21:
-                print("Blackjack! You win!")
-                player.hand.handValue = 21
-                return
-        isValid = False
-        print("Dealer is showing " + dealer.hand.hand[0].toString())
-        while not isValid:
-            print(player.name + ": Your Hand is " + player.hand.toString())
-            decision = input("Would you like to hit (\'h\') or stand (\'s\')? ") #TODO: Incorporate splitting
-            if decision == "h":
-                player.dealCard(deck.dealCard())
-                if player.hand.areBusted():
-                    player.hand.stillIn = False
-                    print("You busted with " + player.hand.toString())
-                    return
-                isValid = True
-            elif decision == "s":
-                player.hand.stand()
-                return
-            else:
-                print("Excuse me, sir. This is not a valid move. Try again.")
+    currentHand = 0
+    while currentHand < len(player.hand):
+        toNextHand = False
+        while player.hand[currentHand].stillIn and not toNextHand:
+            if len(player.hand[currentHand].hand) == 2:
+                if len(player.hand[currentHand].handValue) == 2 and player.hand[currentHand].handValue[1] == 21:
+                    print("Blackjack! You win!")
+                    player.hand[currentHand].handValue = -1
+                    break
+            isValid = False
+            print("Dealer is showing " + dealer.hand.hand[0].toString())
+            while not isValid:
+                print(player.name + ": Your Hand is " + player.hand[currentHand].toString())
+                decision = input("1. (\'h\')it "+ 
+                                 "2. (\'s\')tand? " + ("3. spli(\'t\') " 
+                                 if player.hand[currentHand].canSplit() else ""))
+                if decision == "h":
+                    player.dealCard(deck.dealCard(), currentHand)
+                    if player.hand[currentHand].areBusted():
+                        player.hand[currentHand].stillIn = False
+                        print("You busted with " + player.hand[currentHand].toString())
+                        toNextHand = True
+                    isValid = True
+                elif decision == "s":
+                    player.hand[currentHand].stand()
+                    toNextHand = True
+                    isValid = True
+                elif decision == "t":
+                    if not player.hand[currentHand].canSplit():
+                        print("Excuse me, sir. This is not a valid move. Try again.")
+                    else:
+                        player.splitHand(deck.dealCard(),deck.dealCard(),currentHand)
+                        player.placeBet(player.bet)
+                else:
+                    print("Excuse me, sir. This is not a valid move. Try again.")
+        currentHand += 1
 
+'''
+* The dealer's sequence of plays.
+* Rules:
+*     1) The dealer must hit on all hands less than 17
+*     2) The dealer must stand on all hands at or above 17 (no soft 17s)
+* @return The status the dealer leaves with...
+      -1) The dealer has blackjack
+       0) The dealer busts
+       *) The dealer's hand value
+'''
 def dealerLoop(deck):
     print("Dealer is showing " + dealer.hand.hand[0].toString())
     dealer.hand.hand[1].flip()
@@ -253,16 +288,22 @@ def dealerLoop(deck):
     print("Dealer stands at " + str(dealer.hand.handValue))
     return dealer.hand.handValue
 
-def checkWinner(player, dealer, dealerStatus):
-    if dealerStatus == 0:
+def checkWinner(player, handNumber, dealer, dealerStatus):
+    if dealerStatus == 0 and player.hand[handNumber].stillIn:
         player.receiveWinnings(player.bet * 2)
         print(player.name + " wins!")
+        return
     elif dealerStatus == -1:
-    #Dealer hit blackjack, all players lose except those with BJ    
-        print("Sorry, " + player.name + ": dealer's blackjack means you lose.")
+        #Dealer hit blackjack, all players lose except those with BJ 
+        if player.hand[handNumber].handValue == -1:
+            player.receiveWinnings(player.bet)
+            print(player.name + ": You pushed and have received your bet back.")
+        else: 
+            print("Sorry, " + player.name + ": dealer's blackjack means you lose.")
+        return
     else:
         #Calculate who wins between dealers and players that are still in
-        winner = player.hand.compareTo(dealer.hand)
+        winner = player.hand[handNumber].compareTo(dealer.hand)
         if winner == 1:
             player.receiveWinnings(player.bet * 2)
             print("Congrats, " + player.name + ", you win $" + (str)(player.bet))
@@ -271,8 +312,32 @@ def checkWinner(player, dealer, dealerStatus):
             print(player.name + ": You pushed and have received your bet back.")
         else:
             print("Dealer beats " + player.name + "\'s " + 
-                    str(player.hand.handValue) + " with " + 
+                    str(player.hand[handNumber].handValue) + " with " + 
                     str(dealer.hand.handValue) + ". Better luck next time.")
+
+'''
+* Figure out who still wants to play
+* If a player is out either by choice or by lack of funds
+* Remove them from the list of available players
+'''
+def cleanUpPlayers():
+    global playerList
+    playersToRemove = []
+    for p in playerList:
+        print(p.name + " has $" + str(p.money))
+        if p.money <= 0:
+            print("Sorry, " + p.name + ", you are out of money. Goodbye")
+            playersToRemove.append(p)
+        else:
+            p.reset()
+            print(p.name + "\'s hand has been reset")
+    for out in playersToRemove:
+        playerList.remove(out)
+    dealer.hand.reset()
+    if len(playerList) == 0:
+        print("It seems all players are out. Goodbye")
+        return False
+    return True
     
 def go():
     deck = Deck()
@@ -286,24 +351,12 @@ def go():
             playerLoop(player, deck)
         dealerStatus = dealerLoop(deck)
         for player in playerList:
-            if player.hand.stillIn:
-                checkWinner(player, dealer, dealerStatus)
+            for currentHand in range(len(player.hand)):
+                if player.hand[currentHand].stillIn:
+                    checkWinner(player, currentHand, dealer, dealerStatus)
         answer = input("Continue playing? ")
         if not(answer == "yes" or answer == "y"):
             arePlaying = False
         else:
-            playersToRemove = []
-            for p in playerList:
-                print(p.name + " has $" + str(p.money))
-                if p.money <= 0:
-                    print("Sorry, " + p.name + ", you are out of money. Goodbye")
-                    playersToRemove.append(p)
-                else:
-                    p.hand.reset()
-                    print(p.name + "\'s hand has been reset")
-            for out in playersToRemove:
-                playerList.remove(out)
-            dealer.hand.reset()
-            if len(playerList) == 0:
-                print("It seems all players are out. Goodbye")
-                arePlaying = False
+            arePlaying = cleanUpPlayers()
+            deck.fillDeck()
