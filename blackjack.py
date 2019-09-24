@@ -96,7 +96,7 @@ class BJHand:
     * @return -1: If self's value < altHand's value
     '''
     def compareTo(self, altHand):
-        if self.handValue > altHand.handValue or self.handValue == -1:
+        if self.handValue > altHand.handValue or (self.handValue == -1 and altHand.handValue != -1):
             return 1
         elif self.handValue == altHand.handValue:
             return 0
@@ -289,31 +289,35 @@ def dealerLoop(deck):
     return dealer.hand.handValue
 
 def checkWinner(player, handNumber, dealer, dealerStatus):
-    if dealerStatus == 0 and player.hand[handNumber].stillIn:
+    if dealerStatus == 0:
         player.receiveWinnings(player.bet * 2)
         print(player.name + " wins!")
-        return
+        return 1
     elif dealerStatus == -1:
         #Dealer hit blackjack, all players lose except those with BJ 
         if player.hand[handNumber].handValue == -1:
             player.receiveWinnings(player.bet)
             print(player.name + ": You pushed and have received your bet back.")
+            return 0
         else: 
             print("Sorry, " + player.name + ": dealer's blackjack means you lose.")
-        return
+            return -1
     else:
         #Calculate who wins between dealers and players that are still in
         winner = player.hand[handNumber].compareTo(dealer.hand)
         if winner == 1:
             player.receiveWinnings(player.bet * 2)
             print("Congrats, " + player.name + ", you win $" + (str)(player.bet))
+            return 1
         elif winner == 0:
             player.receiveWinnings(player.bet)
             print(player.name + ": You pushed and have received your bet back.")
+            return 0
         else:
             print("Dealer beats " + player.name + "\'s " + 
                     str(player.hand[handNumber].handValue) + " with " + 
                     str(dealer.hand.handValue) + ". Better luck next time.")
+            return -1
 
 '''
 * Figure out who still wants to play
@@ -360,3 +364,4 @@ def go():
         else:
             arePlaying = cleanUpPlayers()
             deck.fillDeck()
+            deck.shuffle()

@@ -1,14 +1,20 @@
 # deck-of-cards
-September 10, 2019
+September 24, 2019
 
 To Run: Simply run "python ." or "python \_\_main\_\_.py" from the command line.
 
+After finishing splitting, I am leaving this project as is for a while to focus on others. That being said, please feel free to leave issues on things you would like to see added and I will return to this project to clean it up and add features when I have time.
+
 TODO: 
 
+* Update documentation using Sphinx
+
+* Expand unit tests
+
 * Add functionality for:
-    - Split
     - Double down
     - Betting/payout rates/insurance
+    - Refill deck on last drawn card rather than after every hand
 
 * Move blackjack.py to new folder, so games are separate from
     the base cards
@@ -17,6 +23,7 @@ TODO:
 
 * Create player base class, which BJPlayer extends
 
-* Expand unit tests
 
-* Update documentation using Sphinx
+
+
+

@@ -3,6 +3,7 @@ from deck import Deck
 from card import Card
 from blackjack import *
 
+#TODO: Add tests for dealerloop, update compareTo tests
 class TestAreBusted(unittest.TestCase):
 
     def test_ThreeFace(self):
@@ -107,7 +108,7 @@ class TestBets(unittest.TestCase):
         bjp = BJPlayer("Me")
         self.assertTrue(bjp.placeBet(bjp.money))
 
-class TestSplitting(unittest.TestCase):
+class TestSplitAbility(unittest.TestCase):
 
     def test_CantSplit(self):
         oneHand = BJHand()
@@ -126,3 +127,40 @@ class TestSplitting(unittest.TestCase):
         oneHand.addCard(Card(8, "C"))
         oneHand.addCard(Card(8, "H"))
         self.assertTrue(oneHand.canSplit())
+
+class TestHandComparisons(unittest.TestCase):
+    def test_FaceCards(self):
+        jack = Card(11, "H")
+        queen = Card(12, "S")
+        king = Card(13, "D")
+        ten = Card(10, "C")
+
+        hand1 = BJHand()
+        hand1.addCard(jack)
+        hand1.addCard(queen)
+        hand1.stand()
+        hand2 = BJHand()
+        hand2.addCard(ten)
+        hand2.addCard(Card(5, "C"))
+        hand2.addCard(Card(2, "S"))
+        hand2.addCard(Card(3,"D"))
+        hand2.stand()
+        self.assertTrue(hand1.compareTo(hand2) == 0)
+
+        hand3 = BJHand()
+        hand3.addCard(ten)
+        hand3.addCard(king)
+        hand3.stand()
+        self.assertTrue(hand3.compareTo(hand2) == 0)
+
+    def test_Aces(self):
+        pass
+
+    def test_BlackJack(self): #TODO: Implement fake inputs and fixed deck to produced desired results from 
+                              #Player loop and dealer loop
+        blackJack = BJHand()
+        blackJack.handValue = -1
+        dealerHand = BJHand()
+        dealerHand.handValue = 21
+        self.assertTrue(blackJack.compareTo(dealerHand) == 1)
+
