@@ -5,7 +5,7 @@ import unittest
 
 class TestDealCardsFromDeck(unittest.TestCase):
 
-    def testNoShuffleDeal(self):
+    def test_NoShuffleDeal(self):
         d = Deck()
         answer = d.dealCard()
         self.assertEqual(answer.value, 1)
@@ -13,7 +13,7 @@ class TestDealCardsFromDeck(unittest.TestCase):
         self.assertFalse(d.isEmpty)
         self.assertEqual(d.size, 51)
 
-    def testLastCard(self):
+    def test_LastCard(self):
         d = Deck()
         for i in range(len(d.deck) - 1):
             d.dealCard()
@@ -22,7 +22,7 @@ class TestDealCardsFromDeck(unittest.TestCase):
         self.assertTrue(d.isEmpty)
         self.assertIsNone(d.dealCard())
 
-    def testShuffleMaintainsSize(self):
+    def test_ShuffleMaintainsSize(self):
         d = Deck()
         d.shuffle()
         self.assertEqual(d.size, 52)
