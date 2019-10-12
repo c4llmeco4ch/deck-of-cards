@@ -1,7 +1,6 @@
-from card import Card
 from deck import Deck
-import random
 import unittest
+
 
 class TestDealCardsFromDeck(unittest.TestCase):
 
