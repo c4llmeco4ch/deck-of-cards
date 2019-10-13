@@ -1,13 +1,11 @@
 # deck-of-cards
-September 24, 2019
+October 13, 2019
 
 To Run: Simply run "python ." or "python \_\_main\_\_.py" from the command line.
 
 After finishing splitting, I am leaving this project as is for a while to focus on others. That being said, please feel free to leave issues on things you would like to see added and I will return to this project to clean it up and add features when I have time.
 
 TODO: 
-
-* Update documentation using Sphinx
 
 * Expand unit tests
 
