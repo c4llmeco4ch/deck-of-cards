@@ -1,9 +1,9 @@
 import unittest
-from deck import Deck
 from card import Card
-from blackjack import *
+from blackjack import BJHand, BJPlayer
 
-#TODO: Add tests for dealerloop, update compareTo tests
+
+# TODO: Add tests for dealerloop, update compareTo tests
 class TestAreBusted(unittest.TestCase):
 
     def test_ThreeFace(self):
@@ -38,7 +38,7 @@ class TestAreBusted(unittest.TestCase):
         hand.addCard(Card(4, "S"))
         hand.addCard(Card(1, "S"))
         self.assertTrue(hand.areBusted())
-    
+
     def test_LongSafeHand(self):
         hand = BJHand()
         hand.addCard(Card(2, "H"))
@@ -56,6 +56,7 @@ class TestAreBusted(unittest.TestCase):
         hand.addCard(Card(12, "H"))
         self.assertFalse(hand.areBusted())
 
+
 class TestStanding(unittest.TestCase):
 
     def test_DualAces(self):
@@ -64,7 +65,7 @@ class TestStanding(unittest.TestCase):
         hand.addCard(Card(1, "H"))
         hand.areBusted()
         hand.stand()
-        self.assertEqual(12, hand.handValue, "Two aces should equal 12, but don't")
+        self.assertEqual(12, hand.handValue, "Two aces should equal 12")
 
     def test_FourAces(self):
         hand = BJHand()
@@ -74,7 +75,7 @@ class TestStanding(unittest.TestCase):
         hand.addCard(Card(1, "D"))
         hand.areBusted()
         hand.stand()
-        self.assertEqual(14, hand.handValue, "Four aces should equal 14, but don't")
+        self.assertEqual(14, hand.handValue, "Four aces should equal 14")
 
     def test_AceAsEleven(self):
         hand = BJHand()
@@ -84,8 +85,8 @@ class TestStanding(unittest.TestCase):
         hand.addCard(Card(3, "C"))
         hand.areBusted()
         hand.stand()
-        self.assertEqual(16, hand.handValue, "5 + 11 <= 21, so Ace should count as 11")
-    
+        self.assertEqual(16, hand.handValue, "5 + 11 <= 21, Ace counts as 11")
+
     def test_BlackJack(self):
         hand = BJHand()
         hand.addCard(Card(13, "H"))
@@ -93,6 +94,7 @@ class TestStanding(unittest.TestCase):
         hand.areBusted()
         hand.stand()
         self.assertEqual(21, hand.handValue, "Blackjack returns 21")
+
 
 class TestBets(unittest.TestCase):
 
@@ -108,12 +110,13 @@ class TestBets(unittest.TestCase):
         bjp = BJPlayer("Me")
         self.assertTrue(bjp.placeBet(bjp.money))
 
+
 class TestSplitAbility(unittest.TestCase):
 
     def test_CantSplit(self):
         oneHand = BJHand()
         self.assertFalse(oneHand.canSplit())
-        oneHand.addCard(Card(5,"H"))
+        oneHand.addCard(Card(5, "H"))
         oneHand.addCard(Card(10, "S"))
         self.assertFalse(oneHand.canSplit())
         twoHand = BJHand()
@@ -121,12 +124,13 @@ class TestSplitAbility(unittest.TestCase):
         twoHand.addCard(Card(3, "H"))
         twoHand.addCard(Card(3, "S"))
         self.assertFalse(oneHand.canSplit())
-    
+
     def test_CanSplit(self):
         oneHand = BJHand()
         oneHand.addCard(Card(8, "C"))
         oneHand.addCard(Card(8, "H"))
         self.assertTrue(oneHand.canSplit())
+
 
 class TestHandComparisons(unittest.TestCase):
     def test_FaceCards(self):
@@ -143,7 +147,7 @@ class TestHandComparisons(unittest.TestCase):
         hand2.addCard(ten)
         hand2.addCard(Card(5, "C"))
         hand2.addCard(Card(2, "S"))
-        hand2.addCard(Card(3,"D"))
+        hand2.addCard(Card(3, "D"))
         hand2.stand()
         self.assertTrue(hand1.compareTo(hand2) == 0)
 
@@ -156,11 +160,9 @@ class TestHandComparisons(unittest.TestCase):
     def test_Aces(self):
         pass
 
-    def test_BlackJack(self): #TODO: Implement fake inputs and fixed deck to produced desired results from 
-                              #Player loop and dealer loop
-        blackJack = BJHand()
+    def test_BlackJack(self):   # TODO: Implement fake inputs and fixed deck
+        blackJack = BJHand()    # for desired results from player & dealer loop
         blackJack.handValue = -1
         dealerHand = BJHand()
         dealerHand.handValue = 21
         self.assertTrue(blackJack.compareTo(dealerHand) == 1)
-
