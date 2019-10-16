@@ -323,10 +323,9 @@ def checkWinner(player, handNumber, dealer, dealerStatus):
                   n=player.name))
             return 0
         else:
-            print("Dealer beats {n}\'s {pVal} with {dVal}."
-                  + "Better luck next time.".format(
-                    n=player.name, pVal=player.hand[handNumber].handValue,
-                    dVal=dealer.hand.handValue))
+            print("Dealer beats {n}\'s {pVal} with {dVal}. ".format(
+                  n=player.name, pVal=player.hand[handNumber].handValue,
+                  dVal=dealer.hand.handValue) + "Better luck next time.")
             return -1
 
 
