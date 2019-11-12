@@ -6,6 +6,14 @@ class BJHand:
         self.reset()
         self.busted = False
 
+    def __repr__(self):
+        """Convert this hand to a readable string"""
+        currentHand = "| "
+        for c in self.hand:
+            currentHand += repr(c) + ", "
+        currentHand = currentHand[:len(currentHand) - 2] + "|"
+        return currentHand
+
     '''
     * @param c: The Card being added to the hand
     * First, tack the card on the hand list
@@ -68,13 +76,6 @@ class BJHand:
             return True
         return False
 
-    def toString(self):
-        """Convert this hand to a readable string"""
-        currentHand = "| "
-        for c in self.hand:
-            currentHand += c.toString() + ", "
-        currentHand = currentHand[:len(currentHand) - 2] + "|"
-        return currentHand
 
     '''
     * @param altHand: The other player's hand we are comparing 'self' to
@@ -188,7 +189,7 @@ def startGame():
     del(i)
 
 
-def acceptBets():  # TODO: Account for negative bets
+def acceptBets():
     """Take bets from all players"""
     for player in playerList:
         valid = False
@@ -226,10 +227,10 @@ def playerLoop(player, deck):
                 player.hand[currentHand].handValue = -1
                 break
             isValid = False
-            print("Dealer is showing " + dealer.hand.hand[0].toString())
+            print("Dealer is showing ", dealer.hand.hand[0])
             while not isValid:
                 print("{n}: Your Hand is {h}".format(
-                    n=player.name, h=player.hand[currentHand].toString()))
+                    n=player.name, h=player.hand[currentHand]))
                 decision = input("1. (\'h\')it "
                                  + "2. (\'s\')tand? "
                                  + ("3. spli(\'t\') "
@@ -240,7 +241,7 @@ def playerLoop(player, deck):
                     if player.hand[currentHand].areBusted():
                         player.hand[currentHand].stillIn = False
                         print("You busted with "
-                              + player.hand[currentHand].toString())
+                              + repr(player.hand[currentHand]))
                         toNextHand = True
                     isValid = True
                 elif decision == "s":
@@ -270,10 +271,10 @@ def dealerLoop(deck):
         0) The dealer busts
         *) The dealer's hand value
     """
-    print("Dealer is showing " + dealer.hand.hand[0].toString())
+    print("Dealer is showing " + repr(dealer.hand.hand[0]))
     dealer.hand.hand[1].flip()
-    print("Dealer reveals his face-down card: "
-          + dealer.hand.hand[1].toString())
+    print("Dealer reveals his face-down card: ",
+           dealer.hand.hand[1])
     if len(dealer.hand.hand) == 2:
         if len(dealer.hand.handValue) == 2 and dealer.hand.handValue[1] == 21:
             print("Dealer has blackjack!")
@@ -283,9 +284,9 @@ def dealerLoop(deck):
         playing = dealer.decideToHit()
         if playing:
             dealer.hand.addCard(deck.dealCard())
-            print("Dealer now has " + dealer.hand.toString())
+            print("Dealer now has ", dealer.hand)
             if dealer.hand.areBusted():
-                print("Dealer busted with " + dealer.hand.toString() + "!")
+                print("Dealer busted with ", dealer.hand, "!")
                 return 0
     dealer.hand.stand()
     print("Dealer stands at " + str(dealer.hand.handValue))

@@ -60,7 +60,7 @@ class Deck:
         """Print the deck in an easy-to-read format"""
         pDeck = "["
         for c in self.deck:
-            pDeck += " " + c.toString() + " |"
+            pDeck += " ", c, " |"
             pDeck = pDeck[:len(pDeck) - 1] + "]"
         print(pDeck)
 

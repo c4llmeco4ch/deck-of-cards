@@ -13,9 +13,9 @@ class Card:
         if self.isHidden:
             print("??")
         else:
-            print(self.toString())
+            print(self)
 
-    def toString(self):
+    def __repr__(self):
         """Convert the card object to a printable string"""
         val = self.value
         if val == 1:
@@ -27,7 +27,7 @@ class Card:
         elif val == 13:
             val = "K"
         else:
-            val = (str)(val)
+            val = str(val)
         return val + self.suit
 
     '''
