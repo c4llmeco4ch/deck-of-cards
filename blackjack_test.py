@@ -158,10 +158,19 @@ class TestHandComparisons(unittest.TestCase):
         self.assertTrue(hand3.compareTo(hand2) == 0)
 
     def test_Aces(self):
-        pass
+        ace = Card(1, "S")
+        hand1 = BJHand()
+        for _ in range(3):
+            hand1.addCard(ace)
+        hand1.stand()
+        hand2 = BJHand()
+        hand2.addCard(Card(10, "C"))
+        for _ in range(2):
+            hand2.addCard(ace)
+        self.assertTrue(hand1.compareTo(hand2) == 1)
 
-    def test_BlackJack(self):   # TODO: Implement fake inputs and fixed deck
-        blackJack = BJHand()    # for desired results from player & dealer loop
+    def test_BlackJack(self):
+        blackJack = BJHand()
         blackJack.handValue = -1
         dealerHand = BJHand()
         dealerHand.handValue = 21

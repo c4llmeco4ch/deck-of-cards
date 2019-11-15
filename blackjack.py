@@ -76,7 +76,6 @@ class BJHand:
             return True
         return False
 
-
     '''
     * @param altHand: The other player's hand we are comparing 'self' to
     * @return 1: If self's value > altHand's value
@@ -274,7 +273,7 @@ def dealerLoop(deck):
     print("Dealer is showing " + repr(dealer.hand.hand[0]))
     dealer.hand.hand[1].flip()
     print("Dealer reveals his face-down card: ",
-           dealer.hand.hand[1])
+          dealer.hand.hand[1])
     if len(dealer.hand.hand) == 2:
         if len(dealer.hand.handValue) == 2 and dealer.hand.handValue[1] == 21:
             print("Dealer has blackjack!")

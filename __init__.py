@@ -1,4 +1,3 @@
-from blackjack import *
-from card import Card
-from deck import Deck
-import __main__
+import blackjack
+import card
+import deck
