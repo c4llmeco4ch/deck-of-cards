@@ -1,4 +1,4 @@
-from deck import Deck
+from baseComponents import Card, Deck, Hand, Player
 
 
 class BJHand:
