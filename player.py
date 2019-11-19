@@ -1,6 +1,7 @@
 class Player:
 
-    def __init__(self, money):
+    def __init__(self, name, money):
+        self.name = name
         self.money = money
         self.bet = 0
 
