@@ -262,10 +262,10 @@ def playerLoop(player, deck):
 def dealerLoop(deck):
     """The dealer's sequence of plays.
 
-    * Rules:
-    *     1) The dealer must hit on all hands less than 17
-    *     2) The dealer must stand on all hands at or above 17 (no soft 17s)
-    * @return The status the dealer leaves with...
+    Rules:
+        1) The dealer must hit on all hands less than 17
+        2) The dealer must stand on all hands at or above 17 (no soft 17s)
+    @return The status the dealer leaves with...
         -1) The dealer has blackjack
         0) The dealer busts
         *) The dealer's hand value

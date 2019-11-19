@@ -14,13 +14,12 @@ TODO:
 * Add functionality for:
   * Double down
   * Betting/payout rates/insurance
-  * Refill deck on last drawn card rather than after every hand
 
 * Move blackjack.py to new folder, so games are separate from
     the base cards
 
-* Create hand.py base class, which BJHand extends
+* Have BJHand extend Hand
 
-* Create player base class, which BJPlayer extends
+* Have BJPlayer extend Player
 
 * Move BJ functionality of cards to BJCard subclass
