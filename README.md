@@ -1,7 +1,7 @@
 
 # deck-of-cards
 
-November 12, 2019
+November 19, 2019
 
 Python Version: 3.7.4
 
@@ -14,9 +14,6 @@ TODO:
 * Add functionality for:
   * Double down
   * Betting/payout rates/insurance
-
-* Move blackjack.py to new folder, so games are separate from
-    the base cards
 
 * Have BJHand extend Hand
 
