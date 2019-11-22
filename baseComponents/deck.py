@@ -56,7 +56,7 @@ class Deck:
         return mixedDeck
 
     # Print each card in an array-like format for readability
-    def printDeck(self):
+    def print_deck(self):
         """Print the deck in an easy-to-read format"""
         pDeck = "["
         for c in self.deck:
@@ -64,7 +64,7 @@ class Deck:
             pDeck = pDeck[:len(pDeck) - 1] + "]"
         print(pDeck)
 
-    def dealCard(self):
+    def deal_card(self):
         """If the deck is not empty, remove the top card from the deck"""
         if not self.isEmpty:
             self.size -= 1

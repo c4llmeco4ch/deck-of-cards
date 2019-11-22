@@ -8,12 +8,12 @@ class Hand(ABC):
 
     def __repr__(self):
         """Convert this hand to a readable string"""
-        currentHand = "| "
+        current_hand = "| "
         for c in self.hand:
-            currentHand += repr(c) + ", "
-        currentHand = currentHand[:len(currentHand) - 2] + "|"
-        return currentHand
+            current_hand += repr(c) + ", "
+        current_hand = current_hand[:len(current_hand) - 2] + "|"
+        return current_hand
 
     @abstractmethod
-    def addCard(self, cardToAdd):
+    def add_card(self, cardToAdd):
         pass
