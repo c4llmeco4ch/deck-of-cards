@@ -8,11 +8,11 @@ class BJHand:
 
     def __repr__(self):
         """Convert this hand to a readable string"""
-        currentHand = "| "
+        current_hand = "| "
         for c in self.hand:
-            currentHand += repr(c) + ", "
-        currentHand = currentHand[:len(currentHand) - 2] + "|"
-        return currentHand
+            current_hand += repr(c) + ", "
+        current_hand = current_hand[:len(current_hand) - 2] + "|"
+        return current_hand
 
     '''
     * @param c: The Card being added to the hand
@@ -39,7 +39,7 @@ class BJHand:
     * Can only split if both cards' values are the same
     * @return Whether the hand can be split
     '''
-    def canSplit(self):
+    def can_split(self):
         """Determine whether to allow a hand split on the current hand"""
         if len(self.hand) != 2:
             return False
@@ -198,7 +198,7 @@ def acceptBets():
             valid = player.placeBet(amount)
 
 
-def dealHands(deck):
+def deal_hands(deck):
     """
     * Starting with the players then moving to the dealer,
     * Deal each person a card from the deck
@@ -233,7 +233,7 @@ def playerLoop(player, deck):
                 decision = input("1. (\'h\')it "
                                  + "2. (\'s\')tand? "
                                  + ("3. spli(\'t\') "
-                                    if player.hand[currentHand].canSplit()
+                                    if player.hand[currentHand].can_split()
                                     else ""))
                 if decision == "h":
                     player.dealCard(deck.dealCard(), currentHand)
@@ -248,7 +248,7 @@ def playerLoop(player, deck):
                     toNextHand = True
                     isValid = True
                 elif decision == "t":
-                    if not player.hand[currentHand].canSplit():
+                    if not player.hand[currentHand].can_split():
                         print("This is not a valid move. Try again.")
                     else:
                         player.splitHand(deck.dealCard(),
@@ -362,7 +362,7 @@ def go():
     arePlaying = True
     while arePlaying:
         acceptBets()
-        dealHands(deck)
+        deal_hands(deck)
         for player in playerList:
             playerLoop(player, deck)
         dealerStatus = dealerLoop(deck)

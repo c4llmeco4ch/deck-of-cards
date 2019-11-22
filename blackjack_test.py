@@ -1,5 +1,5 @@
 import unittest
-from card import Card
+from baseComponents import Card
 from blackjack import BJHand, BJPlayer
 
 
@@ -115,21 +115,21 @@ class TestSplitAbility(unittest.TestCase):
 
     def test_CantSplit(self):
         oneHand = BJHand()
-        self.assertFalse(oneHand.canSplit())
+        self.assertFalse(oneHand.can_split())
         oneHand.addCard(Card(5, "H"))
         oneHand.addCard(Card(10, "S"))
-        self.assertFalse(oneHand.canSplit())
+        self.assertFalse(oneHand.can_split())
         twoHand = BJHand()
         twoHand.addCard(Card(3, "C"))
         twoHand.addCard(Card(3, "H"))
         twoHand.addCard(Card(3, "S"))
-        self.assertFalse(oneHand.canSplit())
+        self.assertFalse(oneHand.can_split())
 
     def test_CanSplit(self):
         oneHand = BJHand()
         oneHand.addCard(Card(8, "C"))
         oneHand.addCard(Card(8, "H"))
-        self.assertTrue(oneHand.canSplit())
+        self.assertTrue(oneHand.can_split())
 
 
 class TestHandComparisons(unittest.TestCase):
