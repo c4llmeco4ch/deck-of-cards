@@ -7,9 +7,9 @@ class Deck:
         self.deck = []
         self.size = 52
         self.isEmpty = False
-        self.fillDeck()
+        self.fill_deck()
 
-    def fillDeck(self):
+    def fill_deck(self):
         """Fill the deck and place it in new deck order"""
         self.isEmpty = False
         self.size = 52

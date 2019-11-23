@@ -129,23 +129,23 @@ class BJPlayer:
     '''
     * @param: The card to be added
     '''
-    def deal_card(self, c, handNumber):
+    def deal_card(self, c, hand_number):
         """Player is dealt a card and adds it to his hand"""
-        self.hand[handNumber].add_card(c)
+        self.hand[hand_number].add_card(c)
 
     '''
     * @param card1: The card to be added to the first hand
     * @param card2: The card to be added to the second hand
     '''
-    def splitHand(self, card1, card2, handNumber):
+    def splitHand(self, card1, card2, hand_number):
         """Turn one hand into multiple hands"""
-        firstCard = self.hand[handNumber].hand[0]
-        secondCard = self.hand[handNumber].hand[1]
-        self.hand[handNumber] = BJHand()
-        self.deal_card(firstCard, handNumber)
-        self.deal_card(card1, handNumber)
+        first_card = self.hand[hand_number].hand[0]
+        second_card = self.hand[hand_number].hand[1]
+        self.hand[hand_number] = BJHand()
+        self.deal_card(first_card, hand_number)
+        self.deal_card(card1, hand_number)
         self.hand.append(BJHand())
-        self.deal_card(secondCard, len(self.hand) - 1)
+        self.deal_card(second_card, len(self.hand) - 1)
         self.deal_card(card2, len(self.hand) - 1)
 
     def reset(self):
@@ -215,48 +215,48 @@ def deal_hands(deck):
 
 def playerLoop(player, deck):
     """Allow the player to place bets until they bust or stop"""
-    currentHand = 0
-    while currentHand < len(player.hand):
+    current_hand = 0
+    while current_hand < len(player.hand):
         toNextHand = False
-        while player.hand[currentHand].stillIn and not toNextHand:
-            if len(player.hand[currentHand].hand) == 2 and (
-               len(player.hand[currentHand].handValue)
-               == 2 and player.hand[currentHand].handValue[1] == 21):
+        while player.hand[current_hand].stillIn and not toNextHand:
+            if len(player.hand[current_hand].hand) == 2 and (
+               len(player.hand[current_hand].handValue)
+               == 2 and player.hand[current_hand].handValue[1] == 21):
                 print("Blackjack! You win!")
-                player.hand[currentHand].handValue = -1
+                player.hand[current_hand].handValue = -1
                 break
             isValid = False
             print("Dealer is showing ", dealer.hand.hand[0])
             while not isValid:
                 print("{n}: Your Hand is {h}".format(
-                    n=player.name, h=player.hand[currentHand]))
+                    n=player.name, h=player.hand[current_hand]))
                 decision = input("1. (\'h\')it "
                                  + "2. (\'s\')tand? "
                                  + ("3. spli(\'t\') "
-                                    if player.hand[currentHand].can_split()
+                                    if player.hand[current_hand].can_split()
                                     else ""))
                 if decision == "h":
-                    player.deal_card(deck.deal_card(), currentHand)
-                    if player.hand[currentHand].are_busted():
-                        player.hand[currentHand].stillIn = False
+                    player.deal_card(deck.deal_card(), current_hand)
+                    if player.hand[current_hand].are_busted():
+                        player.hand[current_hand].stillIn = False
                         print("You busted with "
-                              + repr(player.hand[currentHand]))
+                              + repr(player.hand[current_hand]))
                         toNextHand = True
                     isValid = True
                 elif decision == "s":
-                    player.hand[currentHand].stand()
+                    player.hand[current_hand].stand()
                     toNextHand = True
                     isValid = True
                 elif decision == "t":
-                    if not player.hand[currentHand].can_split():
+                    if not player.hand[current_hand].can_split():
                         print("This is not a valid move. Try again.")
                     else:
                         player.splitHand(deck.deal_card(),
-                                         deck.deal_card(), currentHand)
+                                         deck.deal_card(), current_hand)
                         player.placeBet(player.bet)
                 else:
                     print("This is not a valid move. Try again.")
-        currentHand += 1
+        current_hand += 1
 
 
 def dealerLoop(deck):
@@ -292,7 +292,7 @@ def dealerLoop(deck):
     return dealer.hand.handValue
 
 
-def checkWinner(player, handNumber, dealer, dealerStatus):
+def checkWinner(player, hand_number, dealer, dealerStatus):
     """Determine who wins between a player's hand and the dealer"""
     if dealerStatus == 0:
         player.receive_winnings(player.bet * 2)
@@ -300,7 +300,7 @@ def checkWinner(player, handNumber, dealer, dealerStatus):
         return 1
     elif dealerStatus == -1:
         # Dealer hit blackjack, all players lose except those with BJ
-        if player.hand[handNumber].handValue == -1:
+        if player.hand[hand_number].handValue == -1:
             player.receive_winnings(player.bet)
             print("{n}: You pushed and have received your bet back.".format(
                   n=player.name))
@@ -311,7 +311,7 @@ def checkWinner(player, handNumber, dealer, dealerStatus):
             return -1
     else:
         # Calculate who wins between dealers and players that are still in
-        winner = player.hand[handNumber].compare_to(dealer.hand)
+        winner = player.hand[hand_number].compare_to(dealer.hand)
         if winner == 1:
             player.receive_winnings(player.bet * 2)
             print("Congrats, {n}, you win ${m}".format(
@@ -324,7 +324,7 @@ def checkWinner(player, handNumber, dealer, dealerStatus):
             return 0
         else:
             print("Dealer beats {n}\'s {pVal} with {dVal}. ".format(
-                  n=player.name, pVal=player.hand[handNumber].handValue,
+                  n=player.name, pVal=player.hand[hand_number].handValue,
                   dVal=dealer.hand.handValue) + "Better luck next time.")
             return -1
 
@@ -367,9 +367,9 @@ def go():
             playerLoop(player, deck)
         dealerStatus = dealerLoop(deck)
         for player in playerList:
-            for currentHand in range(len(player.hand)):
-                if player.hand[currentHand].stillIn:
-                    checkWinner(player, currentHand, dealer, dealerStatus)
+            for current_hand in range(len(player.hand)):
+                if player.hand[current_hand].stillIn:
+                    checkWinner(player, current_hand, dealer, dealerStatus)
         answer = input("Continue playing? ")
         if not(answer == "yes" or answer == "y"):
             are_playing = False

@@ -2,15 +2,15 @@ class Card:
     def __init__(self, value, suit):
         self.value = value
         self.suit = suit
-        self.isHidden = False
+        self.is_hidden = False
 
     def flip(self):
         """Flip this card face-down if face-up or face-up if face-down"""
-        self.isHidden = not self.isHidden
+        self.is_hidden = not self.is_hidden
 
     def printCard(self):
         """Print the card, or obscure it if face-down"""
-        if self.isHidden:
+        if self.is_hidden:
             print("??")
         else:
             print(self)
