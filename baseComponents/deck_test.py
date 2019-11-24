@@ -1,27 +1,27 @@
 from .deck import Deck
-import unittest
+import pytest
 
 
-class TestDealCardsFromDeck(unittest.TestCase):
+class TestDealCardsFromDeck:
 
-    def test_NoShuffleDeal(self):
+    def test_no_shuffle_deal(self):
         d = Deck()
         answer = d.deal_card()
-        self.assertEqual(answer.value, 1)
-        self.assertEqual(answer.suit, "H")
-        self.assertFalse(d.is_empty)
-        self.assertEqual(d.size, 51)
+        assert answer.value == 1
+        assert answer.suit == "H"
+        assert not d.is_empty
+        assert d.size == 51
 
-    def test_LastCard(self):
+    def test_last_card(self):
         d = Deck()
         for i in range(len(d.deck) - 1):
             d.deal_card()
-        self.assertFalse(d.is_empty)
+        assert not d.is_empty
         d.deal_card()
-        self.assertTrue(d.is_empty)
-        self.assertIsNone(d.deal_card())
+        assert d.is_empty
+        assert d.deal_card() is None
 
-    def test_ShuffleMaintainsSize(self):
+    def test_shuffle_maintains_size(self):
         d = Deck()
         d.shuffle()
-        self.assertEqual(d.size, 52)
+        assert d.size == 52
