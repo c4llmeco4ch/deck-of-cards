@@ -1,18 +1,11 @@
 from baseComponents import Card, Deck, Hand, Player
 
 
-class BJHand:
+class BJHand(Hand):
     def __init__(self):
+        super().__init__()
         self.reset()
         self.busted = False
-
-    def __repr__(self):
-        """Convert this hand to a readable string"""
-        current_hand = "| "
-        for c in self.hand:
-            current_hand += repr(c) + ", "
-        current_hand = current_hand[:len(current_hand) - 2] + "|"
-        return current_hand
 
     '''
     * @param c: The Card being added to the hand
@@ -47,7 +40,8 @@ class BJHand:
 
     def stand(self):
         """Set the player's best score,
-            and pull him out of the dealing process"""
+            and pull him out of the dealing process
+        """
         best = 0
         for v in self.hand_value:
             if v >= best:
@@ -65,7 +59,8 @@ class BJHand:
     def are_busted(self):
         """Iterate through each possible hand value in the player's hand
             If a particular value is greater than 21,
-            remove it from the list"""
+            remove it from the list
+        """
         nVal = []
         for val in self.hand_value:
             if val <= 21:
@@ -101,38 +96,11 @@ class BJHand:
             return -1
 
 
-class BJPlayer:
+class BJPlayer(Player):
 
     def __init__(self, name):
-        self.money = 100
         self.hand = [BJHand()]
-        self.name = name
-        self.bet = 0
-
-    '''
-    * @param m: The amount of money a player is betting on his hand
-    * If the player cannot pay 'm' dollars, return false to show this inability
-    * Otherwise, subtract that amount of money from the player's account
-    '''
-    def place_bet(self, m):
-        """Place an 'm'-sized bet for this player"""
-        if m > self.money:
-            print("You do not have that much money. Try again")
-            return False
-        elif m <= 0:
-            print("Please place a bet greater than $0.")
-            return False
-        else:
-            self.money -= m
-            self.bet = m  # Might need to make this '+='.
-            return True   # If so, reset bets after each hand
-
-    '''
-    * @param m: The amount of money a player wins from a particular hand
-    '''
-    def receive_winnings(self, m):
-        """This player adds 'm' money to his account"""
-        self.money += m
+        super().__init__(name, 100)
 
     '''
     * @param: The card to be added
@@ -178,18 +146,18 @@ class Dealer:
         return True
 
 
-playerNumber = -1
+player_number = -1
 player_list = []
 dealer = Dealer()
 
 
 def start_game():
     """Determine how many players are in the game"""
-    playerNumber = -1
-    while playerNumber <= 0:
-        playerNumber = (int)(input("How many players would like "
+    player_number = -1
+    while player_number <= 0:
+        player_number = (int)(input("How many players would like "
                                    + "a chair at the table?\nMax 5: "))
-    for i in range(playerNumber):
+    for i in range(player_number):
         pName = input("Player {}, choose a name: ".format(i + 1))
         print("{name} is your name".format(name=pName))
         player_list.append(BJPlayer(pName))

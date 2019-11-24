@@ -4,7 +4,7 @@ class Hand(ABC):
     def __init__(self):
         self.cards = []
         self.numOfCards = 0
-        super.__init__()
+        super().__init__()
 
     def __repr__(self):
         """Convert this hand to a readable string"""
@@ -16,4 +16,8 @@ class Hand(ABC):
 
     @abstractmethod
     def add_card(self, cardToAdd):
+        pass
+
+    @abstractmethod
+    def reset(self):
         pass

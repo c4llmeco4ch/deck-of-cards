@@ -5,7 +5,7 @@ class Player:
         self.money = money
         self.bet = 0
 
-    def placeBet(self, amount):
+    def place_bet(self, amount):
         """Place an 'amount'-sized bet for this player"""
         if amount > self.money:
             print("You do not have that much money. Try again")
@@ -21,6 +21,6 @@ class Player:
     '''
     * @param m: The amount of money a player wins from a particular hand
     '''
-    def receiveWinnings(self, amount):
+    def receive_winnings(self, amount):
         """This player adds 'amount' money to his account"""
         self.money += amount
