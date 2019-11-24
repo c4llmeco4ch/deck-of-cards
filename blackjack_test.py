@@ -3,112 +3,112 @@ from baseComponents import Card
 from blackjack import BJHand, BJPlayer
 
 
-# TODO: Add tests for dealerloop, update compareTo tests
+# TODO: Add tests for dealerloop, update compare_to tests
 class TestAreBusted(unittest.TestCase):
 
     def test_ThreeFace(self):
         hand = BJHand()
-        hand.addCard(Card(11, "H"))
-        hand.addCard(Card(12, "D"))
-        hand.addCard(Card(13, "S"))
-        self.assertTrue(hand.areBusted())
+        hand.add_card(Card(11, "H"))
+        hand.add_card(Card(12, "D"))
+        hand.add_card(Card(13, "S"))
+        self.assertTrue(hand.are_busted())
 
     def test_ThreeAce(self):
         hand = BJHand()
-        hand.addCard(Card(1, "S"))
-        hand.addCard(Card(1, "H"))
-        hand.addCard(Card(1, "C"))
-        self.assertFalse(hand.areBusted())
+        hand.add_card(Card(1, "S"))
+        hand.add_card(Card(1, "H"))
+        hand.add_card(Card(1, "C"))
+        self.assertFalse(hand.are_busted())
 
     def test_NormalHand(self):
         hand = BJHand()
-        hand.addCard(Card(4, "H"))
-        hand.addCard(Card(5, "S"))
-        hand.addCard(Card(6, "C"))
-        self.assertFalse(hand.areBusted())
+        hand.add_card(Card(4, "H"))
+        hand.add_card(Card(5, "S"))
+        hand.add_card(Card(6, "C"))
+        self.assertFalse(hand.are_busted())
 
     def test_LongBustedHand(self):
         hand = BJHand()
-        hand.addCard(Card(2, "H"))
-        hand.addCard(Card(3, "S"))
-        hand.addCard(Card(5, "C"))
-        hand.addCard(Card(1, "H"))
-        hand.addCard(Card(1, "D"))
-        hand.addCard(Card(5, "D"))
-        hand.addCard(Card(4, "S"))
-        hand.addCard(Card(1, "S"))
-        self.assertTrue(hand.areBusted())
+        hand.add_card(Card(2, "H"))
+        hand.add_card(Card(3, "S"))
+        hand.add_card(Card(5, "C"))
+        hand.add_card(Card(1, "H"))
+        hand.add_card(Card(1, "D"))
+        hand.add_card(Card(5, "D"))
+        hand.add_card(Card(4, "S"))
+        hand.add_card(Card(1, "S"))
+        self.assertTrue(hand.are_busted())
 
     def test_LongSafeHand(self):
         hand = BJHand()
-        hand.addCard(Card(2, "H"))
-        hand.addCard(Card(2, "S"))
-        hand.addCard(Card(7, "C"))
-        hand.addCard(Card(1, "H"))
-        hand.addCard(Card(1, "D"))
-        hand.addCard(Card(5, "D"))
-        hand.addCard(Card(3, "S"))
-        self.assertFalse(hand.areBusted())
+        hand.add_card(Card(2, "H"))
+        hand.add_card(Card(2, "S"))
+        hand.add_card(Card(7, "C"))
+        hand.add_card(Card(1, "H"))
+        hand.add_card(Card(1, "D"))
+        hand.add_card(Card(5, "D"))
+        hand.add_card(Card(3, "S"))
+        self.assertFalse(hand.are_busted())
 
     def test_BlackJack(self):
         hand = BJHand()
-        hand.addCard(Card(1, "S"))
-        hand.addCard(Card(12, "H"))
-        self.assertFalse(hand.areBusted())
+        hand.add_card(Card(1, "S"))
+        hand.add_card(Card(12, "H"))
+        self.assertFalse(hand.are_busted())
 
 
 class TestStanding(unittest.TestCase):
 
     def test_DualAces(self):
         hand = BJHand()
-        hand.addCard(Card(1, "S"))
-        hand.addCard(Card(1, "H"))
-        hand.areBusted()
+        hand.add_card(Card(1, "S"))
+        hand.add_card(Card(1, "H"))
+        hand.are_busted()
         hand.stand()
-        self.assertEqual(12, hand.handValue, "Two aces should equal 12")
+        self.assertEqual(12, hand.hand_value, "Two aces should equal 12")
 
     def test_FourAces(self):
         hand = BJHand()
-        hand.addCard(Card(1, "S"))
-        hand.addCard(Card(1, "H"))
-        hand.addCard(Card(1, "C"))
-        hand.addCard(Card(1, "D"))
-        hand.areBusted()
+        hand.add_card(Card(1, "S"))
+        hand.add_card(Card(1, "H"))
+        hand.add_card(Card(1, "C"))
+        hand.add_card(Card(1, "D"))
+        hand.are_busted()
         hand.stand()
-        self.assertEqual(14, hand.handValue, "Four aces should equal 14")
+        self.assertEqual(14, hand.hand_value, "Four aces should equal 14")
 
     def test_AceAsEleven(self):
         hand = BJHand()
-        print("This hand has a value of: " + str(hand.handValue[0]))
-        hand.addCard(Card(1, "D"))
-        hand.addCard(Card(2, "S"))
-        hand.addCard(Card(3, "C"))
-        hand.areBusted()
+        print("This hand has a value of: " + str(hand.hand_value[0]))
+        hand.add_card(Card(1, "D"))
+        hand.add_card(Card(2, "S"))
+        hand.add_card(Card(3, "C"))
+        hand.are_busted()
         hand.stand()
-        self.assertEqual(16, hand.handValue, "5 + 11 <= 21, Ace counts as 11")
+        self.assertEqual(16, hand.hand_value, "5 + 11 <= 21, Ace counts as 11")
 
     def test_BlackJack(self):
         hand = BJHand()
-        hand.addCard(Card(13, "H"))
-        hand.addCard(Card(1, "D"))
-        hand.areBusted()
+        hand.add_card(Card(13, "H"))
+        hand.add_card(Card(1, "D"))
+        hand.are_busted()
         hand.stand()
-        self.assertEqual(21, hand.handValue, "Blackjack returns 21")
+        self.assertEqual(21, hand.hand_value, "Blackjack returns 21")
 
 
 class TestBets(unittest.TestCase):
 
     def test_NegativeBet(self):
         bjp = BJPlayer("Connor")
-        self.assertFalse(bjp.placeBet(-5))
+        self.assertFalse(bjp.place_bet(-5))
 
     def test_TooHighBet(self):
         bjp = BJPlayer("Me")
-        self.assertFalse(bjp.placeBet(101))
+        self.assertFalse(bjp.place_bet(101))
 
     def test_ExactHighBet(self):
         bjp = BJPlayer("Me")
-        self.assertTrue(bjp.placeBet(bjp.money))
+        self.assertTrue(bjp.place_bet(bjp.money))
 
 
 class TestSplitAbility(unittest.TestCase):
@@ -116,19 +116,19 @@ class TestSplitAbility(unittest.TestCase):
     def test_CantSplit(self):
         oneHand = BJHand()
         self.assertFalse(oneHand.can_split())
-        oneHand.addCard(Card(5, "H"))
-        oneHand.addCard(Card(10, "S"))
+        oneHand.add_card(Card(5, "H"))
+        oneHand.add_card(Card(10, "S"))
         self.assertFalse(oneHand.can_split())
         twoHand = BJHand()
-        twoHand.addCard(Card(3, "C"))
-        twoHand.addCard(Card(3, "H"))
-        twoHand.addCard(Card(3, "S"))
+        twoHand.add_card(Card(3, "C"))
+        twoHand.add_card(Card(3, "H"))
+        twoHand.add_card(Card(3, "S"))
         self.assertFalse(oneHand.can_split())
 
     def test_CanSplit(self):
         oneHand = BJHand()
-        oneHand.addCard(Card(8, "C"))
-        oneHand.addCard(Card(8, "H"))
+        oneHand.add_card(Card(8, "C"))
+        oneHand.add_card(Card(8, "H"))
         self.assertTrue(oneHand.can_split())
 
 
@@ -140,38 +140,38 @@ class TestHandComparisons(unittest.TestCase):
         ten = Card(10, "C")
 
         hand1 = BJHand()
-        hand1.addCard(jack)
-        hand1.addCard(queen)
+        hand1.add_card(jack)
+        hand1.add_card(queen)
         hand1.stand()
         hand2 = BJHand()
-        hand2.addCard(ten)
-        hand2.addCard(Card(5, "C"))
-        hand2.addCard(Card(2, "S"))
-        hand2.addCard(Card(3, "D"))
+        hand2.add_card(ten)
+        hand2.add_card(Card(5, "C"))
+        hand2.add_card(Card(2, "S"))
+        hand2.add_card(Card(3, "D"))
         hand2.stand()
-        self.assertTrue(hand1.compareTo(hand2) == 0)
+        self.assertTrue(hand1.compare_to(hand2) == 0)
 
         hand3 = BJHand()
-        hand3.addCard(ten)
-        hand3.addCard(king)
+        hand3.add_card(ten)
+        hand3.add_card(king)
         hand3.stand()
-        self.assertTrue(hand3.compareTo(hand2) == 0)
+        self.assertTrue(hand3.compare_to(hand2) == 0)
 
     def test_Aces(self):
         ace = Card(1, "S")
         hand1 = BJHand()
         for _ in range(3):
-            hand1.addCard(ace)
+            hand1.add_card(ace)
         hand1.stand()
         hand2 = BJHand()
-        hand2.addCard(Card(10, "C"))
+        hand2.add_card(Card(10, "C"))
         for _ in range(2):
-            hand2.addCard(ace)
-        self.assertTrue(hand1.compareTo(hand2) == 1)
+            hand2.add_card(ace)
+        self.assertTrue(hand1.compare_to(hand2) == 1)
 
     def test_BlackJack(self):
         blackJack = BJHand()
-        blackJack.handValue = -1
+        blackJack.hand_value = -1
         dealerHand = BJHand()
-        dealerHand.handValue = 21
-        self.assertTrue(blackJack.compareTo(dealerHand) == 1)
+        dealerHand.hand_value = 21
+        self.assertTrue(blackJack.compare_to(dealerHand) == 1)

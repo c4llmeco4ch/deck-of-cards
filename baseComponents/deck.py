@@ -6,12 +6,12 @@ class Deck:
     def __init__(self):
         self.deck = []
         self.size = 52
-        self.isEmpty = False
+        self.is_empty = False
         self.fill_deck()
 
     def fill_deck(self):
         """Fill the deck and place it in new deck order"""
-        self.isEmpty = False
+        self.is_empty = False
         self.size = 52
         suits = ["H", "C", "D", "S"]
         values = 13
@@ -28,32 +28,33 @@ class Deck:
         self.deck = deck
 
     def shuffle(self):
-        """Shuffle the deck"""
-        self.deck = self.randMerge(self.deck)
+        """Shuffle the deck 4 times"""
+        for _ in range(4):
+            self.deck = self.random_merge(self.deck)
 
-    def randMerge(self, d):
+    def random_merge(self, d):
         """Perform merge sort,
         but randomly choose which elements are added,
         rather than adding in logical order
         """
         if len(d) <= 1:
             return d
-        left = self.randMerge(d[:len(d)//2])
-        right = self.randMerge(d[(len(d)//2):])
-        mixedDeck = []
+        left = self.random_merge(d[:len(d)//2])
+        right = self.random_merge(d[(len(d)//2):])
+        mixed_deck = []
         while len(left) > 0 and len(right) > 0:
             which = random.randint(1, 3)
             if which == 1:
-                mixedDeck.append(left.pop(0))
+                mixed_deck.append(left.pop(0))
             else:
-                mixedDeck.append(right.pop(0))
+                mixed_deck.append(right.pop(0))
         if len(right) == 0:
             for c in left:
-                mixedDeck.append(c)
+                mixed_deck.append(c)
         else:
             for c in right:
-                mixedDeck.append(c)
-        return mixedDeck
+                mixed_deck.append(c)
+        return mixed_deck
 
     # Print each card in an array-like format for readability
     def print_deck(self):
@@ -66,10 +67,10 @@ class Deck:
 
     def deal_card(self):
         """If the deck is not empty, remove the top card from the deck"""
-        if not self.isEmpty:
+        if not self.is_empty:
             self.size -= 1
             if self.size == 0:
-                self.isEmpty = True
+                self.is_empty = True
             return self.deck.pop(0)
         else:
             print("No cards in the deck to deal")

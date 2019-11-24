@@ -9,16 +9,16 @@ class TestDealCardsFromDeck(unittest.TestCase):
         answer = d.deal_card()
         self.assertEqual(answer.value, 1)
         self.assertEqual(answer.suit, "H")
-        self.assertFalse(d.isEmpty)
+        self.assertFalse(d.is_empty)
         self.assertEqual(d.size, 51)
 
     def test_LastCard(self):
         d = Deck()
         for i in range(len(d.deck) - 1):
             d.deal_card()
-        self.assertFalse(d.isEmpty)
+        self.assertFalse(d.is_empty)
         d.deal_card()
-        self.assertTrue(d.isEmpty)
+        self.assertTrue(d.is_empty)
         self.assertIsNone(d.deal_card())
 
     def test_ShuffleMaintainsSize(self):

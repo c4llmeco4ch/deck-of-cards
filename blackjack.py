@@ -23,15 +23,15 @@ class BJHand:
     '''
     def add_card(self, c):
         self.hand.append(c)
-        size = len(self.handValue)
+        size = len(self.hand_value)
         for pos in range(size):
             if c.value == 1:  # deal with Aces counting as 11 first
-                self.handValue.append(self.handValue[pos] + 11)
+                self.hand_value.append(self.hand_value[pos] + 11)
             if c.value <= 10:
-                self.handValue[pos] += c.value
+                self.hand_value[pos] += c.value
             else:
-                self.handValue[pos] += 10
-        self.numOfCards += 1
+                self.hand_value[pos] += 10
+        self.num_of_cards += 1
 
     '''
     * Rules:
@@ -49,45 +49,45 @@ class BJHand:
         """Set the player's best score,
             and pull him out of the dealing process"""
         best = 0
-        for v in self.handValue:
+        for v in self.hand_value:
             if v >= best:
                 best = v
         del(v)
-        self.handValue = best
+        self.hand_value = best
 
     def reset(self):
         """Return a hand to its default state"""
         self.hand = []
-        self.handValue = [0]
-        self.numOfCards = 0
-        self.stillIn = True
+        self.hand_value = [0]
+        self.num_of_cards = 0
+        self.still_in = True
 
     def are_busted(self):
         """Iterate through each possible hand value in the player's hand
             If a particular value is greater than 21,
             remove it from the list"""
         nVal = []
-        for val in self.handValue:
+        for val in self.hand_value:
             if val <= 21:
                 nVal.append(val)
         del(val)
-        self.handValue = nVal
-        if len(self.handValue) <= 0:
+        self.hand_value = nVal
+        if len(self.hand_value) <= 0:
             return True
         return False
 
     '''
-    * @param altHand: The other player's hand we are comparing 'self' to
-    * @return 1: If self's value > altHand's value
-    * @return 0: If self's value == altHand's value
-    * @return -1: If self's value < altHand's value
+    * @param alt_hand: The other player's hand we are comparing 'self' to
+    * @return 1: If self's value > alt_hand's value
+    * @return 0: If self's value == alt_hand's value
+    * @return -1: If self's value < alt_hand's value
     '''
-    def compare_to(self, altHand):
+    def compare_to(self, alt_hand):
         """Compare this hand to another"""
-        if self.handValue > altHand.handValue or (self.handValue
-           == -1 and altHand.handValue != -1):
+        if self.hand_value > alt_hand.hand_value or (self.hand_value
+           == -1 and alt_hand.hand_value != -1):
             return 1
-        elif self.handValue == altHand.handValue:
+        elif self.hand_value == alt_hand.hand_value:
             return 0
         else:
             return -1
@@ -106,7 +106,7 @@ class BJPlayer:
     * If the player cannot pay 'm' dollars, return false to show this inability
     * Otherwise, subtract that amount of money from the player's account
     '''
-    def placeBet(self, m):
+    def place_bet(self, m):
         """Place an 'm'-sized bet for this player"""
         if m > self.money:
             print("You do not have that much money. Try again")
@@ -137,7 +137,7 @@ class BJPlayer:
     * @param card1: The card to be added to the first hand
     * @param card2: The card to be added to the second hand
     '''
-    def splitHand(self, card1, card2, hand_number):
+    def split_hand(self, card1, card2, hand_number):
         """Turn one hand into multiple hands"""
         first_card = self.hand[hand_number].hand[0]
         second_card = self.hand[hand_number].hand[1]
@@ -157,13 +157,13 @@ class Dealer:
     def __init__(self):
         self.hand = BJHand()
 
-    def decideToHit(self):
+    def decide_to_hit(self):
         """
         * If a hand has a value that leaves it between 17 and 21
         * The dealer must stay
         * Otherwise, the dealer must hit
         """
-        for val in self.hand.handValue:
+        for val in self.hand.hand_value:
             if val >= 17 and val <= 21:
                 return False
         del(val)
@@ -171,7 +171,7 @@ class Dealer:
 
 
 playerNumber = -1
-playerList = []
+player_list = []
 dealer = Dealer()
 
 
@@ -184,18 +184,18 @@ def start_game():
     for i in range(playerNumber):
         pName = input("Player {}, choose a name: ".format(i + 1))
         print("{name} is your name".format(name=pName))
-        playerList.append(BJPlayer(pName))
+        player_list.append(BJPlayer(pName))
     del(i)
 
 
 def accept_bets():
     """Take bets from all players"""
-    for player in playerList:
+    for player in player_list:
         valid = False
         while not valid:
             print("{n}: You have ${m}.".format(n=player.name, m=player.money))
             amount = int(input("Place your bet on this hand: "))
-            valid = player.placeBet(amount)
+            valid = player.place_bet(amount)
 
 
 def deal_hands(deck):
@@ -205,7 +205,7 @@ def deal_hands(deck):
     * Then repeat the process
     """
     for round in range(2):
-        for player in playerList:
+        for player in player_list:
             print("Dealing to " + player.name)
             player.deal_card(deck.deal_card(), 0)
         dealer.hand.add_card(deck.deal_card())
@@ -213,21 +213,21 @@ def deal_hands(deck):
     del(round, player)
 
 
-def playerLoop(player, deck):
+def player_loop(player, deck):
     """Allow the player to place bets until they bust or stop"""
     current_hand = 0
     while current_hand < len(player.hand):
-        toNextHand = False
-        while player.hand[current_hand].stillIn and not toNextHand:
+        to_next_hand = False
+        while player.hand[current_hand].still_in and not to_next_hand:
             if len(player.hand[current_hand].hand) == 2 and (
-               len(player.hand[current_hand].handValue)
-               == 2 and player.hand[current_hand].handValue[1] == 21):
+               len(player.hand[current_hand].hand_value)
+               == 2 and player.hand[current_hand].hand_value[1] == 21):
                 print("Blackjack! You win!")
-                player.hand[current_hand].handValue = -1
+                player.hand[current_hand].hand_value = -1
                 break
-            isValid = False
+            is_valid = False
             print("Dealer is showing ", dealer.hand.hand[0])
-            while not isValid:
+            while not is_valid:
                 print("{n}: Your Hand is {h}".format(
                     n=player.name, h=player.hand[current_hand]))
                 decision = input("1. (\'h\')it "
@@ -238,28 +238,28 @@ def playerLoop(player, deck):
                 if decision == "h":
                     player.deal_card(deck.deal_card(), current_hand)
                     if player.hand[current_hand].are_busted():
-                        player.hand[current_hand].stillIn = False
+                        player.hand[current_hand].still_in = False
                         print("You busted with "
                               + repr(player.hand[current_hand]))
-                        toNextHand = True
-                    isValid = True
+                        to_next_hand = True
+                    is_valid = True
                 elif decision == "s":
                     player.hand[current_hand].stand()
-                    toNextHand = True
-                    isValid = True
+                    to_next_hand = True
+                    is_valid = True
                 elif decision == "t":
                     if not player.hand[current_hand].can_split():
                         print("This is not a valid move. Try again.")
                     else:
-                        player.splitHand(deck.deal_card(),
+                        player.split_hand(deck.deal_card(),
                                          deck.deal_card(), current_hand)
-                        player.placeBet(player.bet)
+                        player.place_bet(player.bet)
                 else:
                     print("This is not a valid move. Try again.")
         current_hand += 1
 
 
-def dealerLoop(deck):
+def dealer_loop(deck):
     """The dealer's sequence of plays.
 
     Rules:
@@ -275,12 +275,12 @@ def dealerLoop(deck):
     print("Dealer reveals his face-down card: ",
           dealer.hand.hand[1])
     if len(dealer.hand.hand) == 2:
-        if len(dealer.hand.handValue) == 2 and dealer.hand.handValue[1] == 21:
+        if len(dealer.hand.hand_value) == 2 and dealer.hand.hand_value[1] == 21:
             print("Dealer has blackjack!")
             return -1
     playing = True
     while playing:
-        playing = dealer.decideToHit()
+        playing = dealer.decide_to_hit()
         if playing:
             dealer.hand.add_card(deck.deal_card())
             print("Dealer now has ", dealer.hand)
@@ -288,19 +288,19 @@ def dealerLoop(deck):
                 print("Dealer busted with ", dealer.hand, "!")
                 return 0
     dealer.hand.stand()
-    print("Dealer stands at " + str(dealer.hand.handValue))
-    return dealer.hand.handValue
+    print("Dealer stands at " + str(dealer.hand.hand_value))
+    return dealer.hand.hand_value
 
 
-def checkWinner(player, hand_number, dealer, dealerStatus):
+def check_winner(player, hand_number, dealer, dealer_status):
     """Determine who wins between a player's hand and the dealer"""
-    if dealerStatus == 0:
+    if dealer_status == 0:
         player.receive_winnings(player.bet * 2)
         print(player.name + " wins!")
         return 1
-    elif dealerStatus == -1:
+    elif dealer_status == -1:
         # Dealer hit blackjack, all players lose except those with BJ
-        if player.hand[hand_number].handValue == -1:
+        if player.hand[hand_number].hand_value == -1:
             player.receive_winnings(player.bet)
             print("{n}: You pushed and have received your bet back.".format(
                   n=player.name))
@@ -324,8 +324,8 @@ def checkWinner(player, hand_number, dealer, dealerStatus):
             return 0
         else:
             print("Dealer beats {n}\'s {pVal} with {dVal}. ".format(
-                  n=player.name, pVal=player.hand[hand_number].handValue,
-                  dVal=dealer.hand.handValue) + "Better luck next time.")
+                  n=player.name, pVal=player.hand[hand_number].hand_value,
+                  dVal=dealer.hand.hand_value) + "Better luck next time.")
             return -1
 
 
@@ -335,9 +335,9 @@ def clean_up_players():
     * If a player is out either by choice or by lack of funds
     * Remove them from the list of available players
     """
-    global playerList
+    global player_list
     players_to_remove = []
-    for p in playerList:
+    for p in player_list:
         print(p.name + " has $" + str(p.money))
         if p.money <= 0:
             print("Sorry, " + p.name + ", you are out of money. Goodbye")
@@ -346,9 +346,9 @@ def clean_up_players():
             p.reset()
             print(p.name + "\'s hand has been reset")
     for out in players_to_remove:
-        playerList.remove(out)
+        player_list.remove(out)
     dealer.hand.reset()
-    if len(playerList) == 0:
+    if len(player_list) == 0:
         print("It seems all players are out. Goodbye")
         return False
     return True
@@ -363,17 +363,17 @@ def go():
     while are_playing:
         accept_bets()
         deal_hands(deck)
-        for player in playerList:
-            playerLoop(player, deck)
-        dealerStatus = dealerLoop(deck)
-        for player in playerList:
+        for player in player_list:
+            player_loop(player, deck)
+        dealer_status = dealer_loop(deck)
+        for player in player_list:
             for current_hand in range(len(player.hand)):
-                if player.hand[current_hand].stillIn:
-                    checkWinner(player, current_hand, dealer, dealerStatus)
+                if player.hand[current_hand].still_in:
+                    check_winner(player, current_hand, dealer, dealer_status)
         answer = input("Continue playing? ")
         if not(answer == "yes" or answer == "y"):
             are_playing = False
         else:
             are_playing = clean_up_players()
-            deck.fillDeck()
+            deck.fill_deck()
             deck.shuffle()
