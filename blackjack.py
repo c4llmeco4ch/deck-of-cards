@@ -76,6 +76,14 @@ class BJHand:
             return True
         return False
 
+    def have_blackjack(self):
+        if len(hand) == 2 and (
+               len(hand_value)
+               == 2 and hand_value[1] == 21):
+            player.hand[current_hand].hand_value = -1
+            return True
+        return False
+
     '''
     * @param alt_hand: The other player's hand we are comparing 'self' to
     * @return 1: If self's value > alt_hand's value
@@ -219,20 +227,17 @@ def player_loop(player, deck):
     while current_hand < len(player.hand):
         to_next_hand = False
         while player.hand[current_hand].still_in and not to_next_hand:
-            if len(player.hand[current_hand].hand) == 2 and (
-               len(player.hand[current_hand].hand_value)
-               == 2 and player.hand[current_hand].hand_value[1] == 21):
+            if player.hand[current_hand].has_blackjack():
                 print("Blackjack! You win!")
-                player.hand[current_hand].hand_value = -1
                 break
             is_valid = False
             print("Dealer is showing ", dealer.hand.hand[0])
             while not is_valid:
                 print("{n}: Your Hand is {h}".format(
                     n=player.name, h=player.hand[current_hand]))
-                decision = input("1. (\'h\')it "
-                                 + "2. (\'s\')tand? "
-                                 + ("3. spli(\'t\') "
+                decision = input("1. ('h')it "
+                                 + "2. ('s')tand? "
+                                 + ("3. spli('t') "
                                     if player.hand[current_hand].can_split()
                                     else ""))
                 if decision == "h":
