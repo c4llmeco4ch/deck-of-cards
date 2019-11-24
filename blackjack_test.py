@@ -114,22 +114,22 @@ class TestBets(unittest.TestCase):
 class TestSplitAbility(unittest.TestCase):
 
     def test_CantSplit(self):
-        oneHand = BJHand()
-        self.assertFalse(oneHand.can_split())
-        oneHand.add_card(Card(5, "H"))
-        oneHand.add_card(Card(10, "S"))
-        self.assertFalse(oneHand.can_split())
+        one_hand = BJHand()
+        self.assertFalse(one_hand.can_split())
+        one_hand.add_card(Card(5, "H"))
+        one_hand.add_card(Card(10, "S"))
+        self.assertFalse(one_hand.can_split())
         twoHand = BJHand()
         twoHand.add_card(Card(3, "C"))
         twoHand.add_card(Card(3, "H"))
         twoHand.add_card(Card(3, "S"))
-        self.assertFalse(oneHand.can_split())
+        self.assertFalse(one_hand.can_split())
 
     def test_CanSplit(self):
-        oneHand = BJHand()
-        oneHand.add_card(Card(8, "C"))
-        oneHand.add_card(Card(8, "H"))
-        self.assertTrue(oneHand.can_split())
+        one_hand = BJHand()
+        one_hand.add_card(Card(8, "C"))
+        one_hand.add_card(Card(8, "H"))
+        self.assertTrue(one_hand.can_split())
 
 
 class TestHandComparisons(unittest.TestCase):
@@ -170,8 +170,8 @@ class TestHandComparisons(unittest.TestCase):
         self.assertTrue(hand1.compare_to(hand2) == 1)
 
     def test_BlackJack(self):
-        blackJack = BJHand()
-        blackJack.hand_value = -1
-        dealerHand = BJHand()
-        dealerHand.hand_value = 21
-        self.assertTrue(blackJack.compare_to(dealerHand) == 1)
+        black_jack = BJHand()
+        black_jack.hand_value = -1
+        dealer_hand = BJHand()
+        dealer_hand.hand_value = 21
+        self.assertTrue(black_jack.compare_to(dealer_hand) == 1)
