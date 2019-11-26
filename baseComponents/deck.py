@@ -13,11 +13,11 @@ class Deck:
         """Fill the deck and place it in new deck order"""
         self.is_empty = False
         self.size = 52
-        suits = ["H", "C", "D", "S"]
+        suits = ['H', 'C', 'D', 'S']
         values = 13
         deck = []
         for s in suits:
-            if s == "H" or s == "C":
+            if s == 'H' or s == 'C':
                 for v in range(1, values+1):
                     c = Card(v, s)
                     deck.append(c)
@@ -59,10 +59,10 @@ class Deck:
     # Print each card in an array-like format for readability
     def print_deck(self):
         """Print the deck in an easy-to-read format"""
-        pDeck = "["
+        pDeck = '['
         for c in self.deck:
-            pDeck += " ", c, " |"
-            pDeck = pDeck[:len(pDeck) - 1] + "]"
+            pDeck = ''.join([pDeck,' ', c.__repr__(), ' |'])
+        pDeck = pDeck[:len(pDeck) - 1] + ']'
         print(pDeck)
 
     def deal_card(self):
@@ -73,5 +73,5 @@ class Deck:
                 self.is_empty = True
             return self.deck.pop(0)
         else:
-            print("No cards in the deck to deal")
+            print('No cards in the deck to deal')
             return None

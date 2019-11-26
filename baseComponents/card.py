@@ -11,7 +11,7 @@ class Card:
     def print_card(self):
         """Print the card, or obscure it if face-down"""
         if self.is_hidden:
-            print("??")
+            print('??')
         else:
             print(self)
 
@@ -19,16 +19,16 @@ class Card:
         """Convert the card object to a printable string"""
         val = self.value
         if val == 1:
-            val = "A"
+            val = 'A'
         elif val == 11:
-            val = "J"
+            val = 'J'
         elif val == 12:
-            val = "Q"
+            val = 'Q'
         elif val == 13:
-            val = "K"
+            val = 'K'
         else:
             val = str(val)
-        return val + self.suit
+        return ''.join([val, self.suit])
 
     '''
     * @param c: The card we are comparing to 'self'
@@ -37,7 +37,7 @@ class Card:
     def compare_to(self, c):
         """Take 2 cards and evaluate which is a higher card"""
         if not isinstance(c, Card):
-            raise ValueError("The passed object is not a card")
+            raise ValueError('The passed object is not a card')
         elif c.value > self.value:
             return -1
         elif c.value < self.value:
