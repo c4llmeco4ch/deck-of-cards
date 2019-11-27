@@ -8,10 +8,10 @@ class Player:
     def place_bet(self, amount):
         """Place an 'amount'-sized bet for this player"""
         if amount > self.money:
-            print("You do not have that much money. Try again")
+            print('You do not have that much money. Try again')
             return False
         elif amount <= 0:
-            print("Please place a bet greater than $0.")
+            print('Please place a bet greater than $0.')
             return False
         else:
             self.money -= amount

@@ -1,4 +1,3 @@
-import pytest
 from baseComponents import Card
 from blackjack import BJHand, BJPlayer
 

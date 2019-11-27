@@ -9,6 +9,13 @@ class Deck:
         self.is_empty = False
         self.fill_deck()
 
+    def __str__(self):
+        pDeck = '['
+        for c in self.deck:
+            pDeck = ''.join([pDeck, ' ', c.__repr__(), ' |'])
+        pDeck = pDeck[:len(pDeck) - 1] + ']'
+        return pDeck
+
     def fill_deck(self):
         """Fill the deck and place it in new deck order"""
         self.is_empty = False
@@ -58,12 +65,7 @@ class Deck:
 
     # Print each card in an array-like format for readability
     def print_deck(self):
-        """Print the deck in an easy-to-read format"""
-        pDeck = '['
-        for c in self.deck:
-            pDeck = ''.join([pDeck,' ', c.__repr__(), ' |'])
-        pDeck = pDeck[:len(pDeck) - 1] + ']'
-        print(pDeck)
+        print(self)
 
     def deal_card(self):
         """If the deck is not empty, remove the top card from the deck"""

@@ -1,4 +1,4 @@
-from baseComponents import Card, Deck, Hand, Player
+from baseComponents import Deck, Hand, Player
 
 
 class BJHand(Hand):
@@ -72,10 +72,10 @@ class BJHand(Hand):
         return False
 
     def have_blackjack(self):
-        if len(hand) == 2 and (
-               len(hand_value)
-               == 2 and hand_value[1] == 21):
-            player.hand[current_hand].hand_value = -1
+        if len(self.hand) == 2 and (
+               len(self.hand_value)
+               == 2 and self.hand_value[1] == 21):
+            self.hand_value = -1
             return True
         return False
 
@@ -155,8 +155,8 @@ def start_game():
     """Determine how many players are in the game"""
     player_number = -1
     while player_number <= 0:
-        player_number = (int)(input("How many players would like "
-                                   + "a chair at the table?\nMax 5: "))
+        player_number = (int)(input('How many players would like '
+                                    + 'a chair at the table?\nMax 5: '))
     for i in range(player_number):
         pName = input("Player {}, choose a name: ".format(i + 1))
         print("{name} is your name".format(name=pName))
@@ -195,7 +195,7 @@ def player_loop(player, deck):
     while current_hand < len(player.hand):
         to_next_hand = False
         while player.hand[current_hand].still_in and not to_next_hand:
-            if player.hand[current_hand].has_blackjack():
+            if player.hand[current_hand].have_blackjack():
                 print("Blackjack! You win!")
                 break
             is_valid = False
@@ -225,7 +225,7 @@ def player_loop(player, deck):
                         print("This is not a valid move. Try again.")
                     else:
                         player.split_hand(deck.deal_card(),
-                                         deck.deal_card(), current_hand)
+                                          deck.deal_card(), current_hand)
                         player.place_bet(player.bet)
                 else:
                     print("This is not a valid move. Try again.")
@@ -248,7 +248,8 @@ def dealer_loop(deck):
     print("Dealer reveals his face-down card: ",
           dealer.hand.hand[1])
     if len(dealer.hand.hand) == 2:
-        if len(dealer.hand.hand_value) == 2 and dealer.hand.hand_value[1] == 21:
+        if len(dealer.hand.hand_value) == 2\
+           and (dealer.hand.hand_value[1] == 21):
             print("Dealer has blackjack!")
             return -1
     playing = True

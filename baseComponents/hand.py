@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+
+
 class Hand(ABC):
 
     def __init__(self):
@@ -8,10 +10,10 @@ class Hand(ABC):
 
     def __repr__(self):
         """Convert this hand to a readable string"""
-        current_hand = "| "
+        current_hand = '| '
         for c in self.hand:
-            current_hand += repr(c) + ", "
-        current_hand = current_hand[:len(current_hand) - 2] + "|"
+            current_hand += repr(c) + ', '
+        current_hand = ''.join([current_hand[:len(current_hand) - 2], '|'])
         return current_hand
 
     @abstractmethod
