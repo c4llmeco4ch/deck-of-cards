@@ -14,4 +14,3 @@ TODO:
   * Betting/payout rates/insurance
 
 * Move BJ functionality of cards to BJCard subclass
-
