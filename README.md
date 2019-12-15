@@ -1,9 +1,9 @@
 
 # deck-of-cards
 
-November 25, 2019
+December 14, 2019
 
-Python Version: 3.7.4
+Python Version: 3.7.4, 3.8.0
 
 To Run: Simply run "python ." or "python \_\_main\_\_.py" from the command line.
 
@@ -15,4 +15,3 @@ TODO:
 
 * Move BJ functionality of cards to BJCard subclass
 
-* Switch from unittest to pytest
