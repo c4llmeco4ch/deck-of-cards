@@ -40,7 +40,8 @@ class Deck:
             self.deck = self.random_merge(self.deck)
 
     def random_merge(self, d):
-        """Perform merge sort,
+        """
+        Perform merge sort,
         but randomly choose which elements are added,
         rather than adding in logical order
         """
@@ -69,11 +70,10 @@ class Deck:
 
     def deal_card(self):
         """If the deck is not empty, remove the top card from the deck"""
-        if not self.is_empty:
-            self.size -= 1
-            if self.size == 0:
-                self.is_empty = True
-            return self.deck.pop(0)
-        else:
+        if self.is_empty:
             print('No cards in the deck to deal')
             return None
+        self.size -= 1
+        if self.size == 0:
+            self.is_empty = True
+        return self.deck.pop(0)            
