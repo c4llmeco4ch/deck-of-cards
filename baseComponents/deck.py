@@ -76,4 +76,4 @@ class Deck:
         self.size -= 1
         if self.size == 0:
             self.is_empty = True
-        return self.deck.pop(0)            
+        return self.deck.pop(0)           
