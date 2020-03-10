@@ -18,9 +18,6 @@ class Player:
             self.bet = amount  # Might need to make this '+='.
             return True   # If so, reset bets after each hand
 
-    '''
-    * @param m: The amount of money a player wins from a particular hand
-    '''
     def receive_winnings(self, amount):
         """This player adds 'amount' money to his account"""
         self.money += amount
