@@ -243,15 +243,14 @@ def dealer_loop(deck):
         0) The dealer busts
         *) The dealer's hand value
     """
-    print("Dealer is showing " + repr(dealer.hand.hand[0]))
+    print("Dealer is showing ", repr(dealer.hand.hand[0]))
     dealer.hand.hand[1].flip()
     print("Dealer reveals his face-down card: ",
           dealer.hand.hand[1])
-    if len(dealer.hand.hand) == 2:
-        if len(dealer.hand.hand_value) == 2\
-           and (dealer.hand.hand_value[1] == 21):
-            print("Dealer has blackjack!")
-            return -1
+    if len(dealer.hand.hand_value) == 2\
+        and (dealer.hand.hand_value[1] == 21):
+        print("Dealer has blackjack!")
+        return -1
     playing = True
     while playing:
         playing = dealer.decide_to_hit()
@@ -268,38 +267,36 @@ def dealer_loop(deck):
 
 def check_winner(player, hand_number, dealer, dealer_status):
     """Determine who wins between a player's hand and the dealer"""
+    phand = player.hand[hand_number]
     if dealer_status == 0:
         player.receive_winnings(player.bet * 2)
-        print(player.name + " wins!")
+        print(player.name, " wins!")
         return 1
     elif dealer_status == -1:
         # Dealer hit blackjack, all players lose except those with BJ
-        if player.hand[hand_number].hand_value == -1:
+        if phand.hand_value == -1:
             player.receive_winnings(player.bet)
-            print("{n}: You pushed and have received your bet back.".format(
-                  n=player.name))
+            print(player.name, ": You pushed and have received your bet back.")
             return 0
         else:
-            print("Sorry, {n}: dealer's blackjack means you lose.".format(
-                  n=player.name))
+            print("Sorry, %s: dealer's blackjack means you lose." % player.name)
             return -1
     else:
         # Calculate who wins between dealers and players that are still in
-        winner = player.hand[hand_number].compare_to(dealer.hand)
+        winner = phand.compare_to(dealer.hand)
         if winner == 1:
             player.receive_winnings(player.bet * 2)
-            print("Congrats, {n}, you win ${m}".format(
-                  n=player.name, m=player.bet))
+            print("Congrats, %s, you win $%d" %
+                  (player.name, player.bet))
             return 1
         elif winner == 0:
             player.receive_winnings(player.bet)
-            print("{n}: You pushed and have received your bet back.".format(
-                  n=player.name))
+            print(player.name, ": You pushed and have received your bet back.")
             return 0
         else:
-            print("Dealer beats {n}\'s {pVal} with {dVal}. ".format(
-                  n=player.name, pVal=player.hand[hand_number].hand_value,
-                  dVal=dealer.hand.hand_value) + "Better luck next time.")
+            print(''.join(["Dealer beats %s\'s %d with %d. " % (
+                  player.name, phand.hand_value, dealer.hand.hand_value)
+                  , "Better luck next time."]))
             return -1
 
 
@@ -312,15 +309,15 @@ def clean_up_players():
     global player_list
     players_to_remove = []
     for p in player_list:
-        print(p.name + " has $" + str(p.money))
+        print("%s has $%d" % (p.name, p.money))
         if p.money <= 0:
-            print("Sorry, " + p.name + ", you are out of money. Goodbye")
+            print("Sorry, %s, you are out of money. Goodbye" % p.name)
             players_to_remove.append(p)
         else:
             p.reset()
-            print(p.name + "\'s hand has been reset")
-    for out in players_to_remove:
-        player_list.remove(out)
+            print("%s\'s hand has been reset" % p.name)
+    player_list = filter(lambda p: p not in players_to_remove,
+                         player_list)
     dealer.hand.reset()
     if len(player_list) == 0:
         print("It seems all players are out. Goodbye")
@@ -341,9 +338,9 @@ def go():
             player_loop(player, deck)
         dealer_status = dealer_loop(deck)
         for player in player_list:
-            for current_hand in range(len(player.hand)):
-                if player.hand[current_hand].still_in:
-                    check_winner(player, current_hand, dealer, dealer_status)
+            for pos, current_hand in enumerate(player.hand):
+                if current_hand.still_in:
+                    check_winner(player, pos, dealer, dealer_status)
         answer = input("Continue playing? ")
         if not(answer == "yes" or answer == "y"):
             are_playing = False
