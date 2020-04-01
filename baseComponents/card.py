@@ -15,7 +15,7 @@ class Card:
         else:
             print(self)
 
-    def __repr__(self):
+    def __str__(self):
         """Convert the card object to a printable string"""
         val = self.value
         if val == 1:
@@ -29,6 +29,10 @@ class Card:
         else:
             val = str(val)
         return ''.join([val, self.suit])
+
+    def __repr__(self):
+        """The representation of a card"""
+        return str(self)
 
     '''
     * @param c: The card we are comparing to 'self'
