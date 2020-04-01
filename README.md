@@ -7,7 +7,7 @@ April 1, 2020
 
 [![Coverage Status](https://coveralls.io/repos/github/c4llmeco4ch/deck-of-cards/badge.svg?branch=master)](https://coveralls.io/github/c4llmeco4ch/deck-of-cards?branch=master)
 
-Python Version: 3.8.0
+Python Version: 3.8
 
 To Run: Simply run "python ." or "python \_\_main\_\_.py" from the command line.
 
