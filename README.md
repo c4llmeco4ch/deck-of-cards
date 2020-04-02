@@ -5,7 +5,7 @@ April 1, 2020
 
 [![Build Status](https://travis-ci.com/c4llmeco4ch/deck-of-cards.svg?branch=master)](https://travis-ci.com/c4llmeco4ch/deck-of-cards)
 
-[![Coverage Status](https://coveralls.io/repos/github/c4llmeco4ch/deck-of-cards/badge.svg?branch=master)](https://coveralls.io/github/c4llmeco4ch/deck-of-cards?branch=master)
+[![codecov](https://codecov.io/gh/c4llmeco4ch/deck-of-cards/branch/master/graph/badge.svg)](https://codecov.io/gh/c4llmeco4ch/deck-of-cards)
 
 Python Version: 3.8
 
