@@ -46,7 +46,6 @@ class BJHand(Hand):
         for v in self.hand_value:
             if v >= best:
                 best = v
-        del(v)
         self.hand_value = best
 
     def reset(self):
@@ -65,7 +64,6 @@ class BJHand(Hand):
         for val in self.hand_value:
             if val <= 21:
                 nVal.append(val)
-        del(val)
         self.hand_value = nVal
         if len(self.hand_value) <= 0:
             return True
@@ -142,7 +140,6 @@ class Dealer:
         for val in self.hand.hand_value:
             if val >= 17 and val <= 21:
                 return False
-        del(val)
         return True
 
 
@@ -161,7 +158,6 @@ def start_game():
         pName = input(f"Player {i+1}, choose a name: ")
         print(f"{pName} is your name")
         player_list.append(BJPlayer(pName))
-    del(i)
 
 
 def accept_bets():
@@ -182,11 +178,10 @@ def deal_hands(deck):
     """
     for round in range(2):
         for player in player_list:
-            print("Dealing to ", player.name)
+            print("Dealing to", player.name)
             player.deal_card(deck.deal_card(), 0)
         dealer.hand.add_card(deck.deal_card())
     dealer.hand.hand[1].flip()
-    del(round, player)
 
 
 def player_loop(player, deck):
@@ -199,7 +194,7 @@ def player_loop(player, deck):
                 print("Blackjack! You win!")
                 break
             is_valid = False
-            print("Dealer is showing ", dealer.hand.hand[0])
+            print("Dealer is showing", dealer.hand.hand[0])
             while not is_valid:
                 print(f"{player.name}: Your Hand is {player.hand[hand_num]}")
                 decision = input(''.join(["1. ('h')it ",
@@ -241,7 +236,7 @@ def dealer_loop(deck):
     """
     print(f"Dealer is showing {dealer.hand.hand[0]}")
     dealer.hand.hand[1].flip()
-    print("Dealer reveals his face-down card: ",
+    print("Dealer reveals his face-down card:",
           dealer.hand.hand[1])
     if len(dealer.hand.hand_value) == 2\
             and (dealer.hand.hand_value[1] == 21):
@@ -252,7 +247,7 @@ def dealer_loop(deck):
         playing = dealer.decide_to_hit()
         if playing:
             dealer.hand.add_card(deck.deal_card())
-            print("Dealer now has ", dealer.hand)
+            print("Dealer now has", dealer.hand)
             if dealer.hand.are_busted():
                 print(f"Dealer busted with {dealer.hand}!")
                 return 0
@@ -289,8 +284,8 @@ def check_winner(player, hand_number, dealer, dealer_status):
             print(player.name, ": You pushed and have received your bet back.")
             return 0
         else:
-            print(f"Dealer beats {player.name}\'s {phand.hand_value}\
-                with {dealer.hand.hand_value}. Better luck next time.")
+            print(f"Dealer beats {player.name}\'s {phand.hand_value}"+
+                f"with {dealer.hand.hand_value}. Better luck next time.")
             return -1
 
 
@@ -313,7 +308,7 @@ def clean_up_players():
     player_list = filter(lambda p: p not in players_to_remove,
                          player_list)
     dealer.hand.reset()
-    if len(player_list) == 0:
+    if len(list(player_list)) == 0:
         print("It seems all players are out. Goodbye")
         return False
     return True
