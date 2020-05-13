@@ -10,7 +10,7 @@ class Hand(ABC):
 
     def __repr__(self):
         """Convert this hand to a readable string"""
-        return ''.join(['| ', ', '.join(str(c) for c in self.hand), '|'])
+        return ''.join(['|', ', '.join(str(c) for c in self.hand), '|'])
 
     @abstractmethod
     def add_card(self, cardToAdd):
