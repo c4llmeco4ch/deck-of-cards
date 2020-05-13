@@ -158,8 +158,8 @@ def start_game():
         player_number = (int)(input('How many players would like '
                                     + 'a chair at the table?\nMax 5: '))
     for i in range(player_number):
-        pName = input("Player {}, choose a name: ".format(i + 1))
-        print("{name} is your name".format(name=pName))
+        pName = input(f"Player {i+1}, choose a name: ")
+        print(f"{pName} is your name")
         player_list.append(BJPlayer(pName))
     del(i)
 
@@ -169,7 +169,7 @@ def accept_bets():
     for player in player_list:
         valid = False
         while not valid:
-            print(player.name, ": You have $%d." % player.money)
+            print(f"{player.name}: You have ${player.money}")
             amount = int(input("Place your bet on this hand: "))
             valid = player.place_bet(amount)
 
@@ -201,13 +201,12 @@ def player_loop(player, deck):
             is_valid = False
             print("Dealer is showing ", dealer.hand.hand[0])
             while not is_valid:
-                print("%s: Your Hand is %d" %
-                      (player.name, player.hand[hand_num]))
-                decision = input(''.join("1. ('h')it ",
+                print(f"{player.name}: Your Hand is {player.hand[hand_num]}")
+                decision = input(''.join(["1. ('h')it ",
                                          "2. ('s')tand? ",
                                          ("3. spli('t') "
                                           if player.hand[hand_num].can_split()
-                                          else "")))
+                                          else "")]))
                 is_valid = True
                 if decision == "h":
                     player.deal_card(deck.deal_card(), hand_num)
@@ -240,7 +239,7 @@ def dealer_loop(deck):
         0) The dealer busts
         *) The dealer's hand value
     """
-    print("Dealer is showing ", repr(dealer.hand.hand[0]))
+    print(f"Dealer is showing {dealer.hand.hand[0]}")
     dealer.hand.hand[1].flip()
     print("Dealer reveals his face-down card: ",
           dealer.hand.hand[1])
@@ -255,7 +254,7 @@ def dealer_loop(deck):
             dealer.hand.add_card(deck.deal_card())
             print("Dealer now has ", dealer.hand)
             if dealer.hand.are_busted():
-                print("Dealer busted with ", dealer.hand, "!")
+                print(f"Dealer busted with {dealer.hand}!")
                 return 0
     dealer.hand.stand()
     print("Dealer stands at " + str(dealer.hand.hand_value))
@@ -267,7 +266,7 @@ def check_winner(player, hand_number, dealer, dealer_status):
     phand = player.hand[hand_number]
     if dealer_status == 0:
         player.receive_winnings(player.bet * 2)
-        print(player.name, " wins!")
+        print(player.name, "wins!")
         return 1
     elif dealer_status == -1:
         # Dealer hit blackjack, all players lose except those with BJ
@@ -283,17 +282,15 @@ def check_winner(player, hand_number, dealer, dealer_status):
         winner = phand.compare_to(dealer.hand)
         if winner == 1:
             player.receive_winnings(player.bet * 2)
-            print("Congrats, %s, you win $%d" %
-                  (player.name, player.bet))
+            print(f"Congrats, {player.name}, you win ${player.bet}")
             return 1
         elif winner == 0:
             player.receive_winnings(player.bet)
             print(player.name, ": You pushed and have received your bet back.")
             return 0
         else:
-            print(''.join(["Dealer beats %s\'s %d with %d. " % (
-                  player.name, phand.hand_value, dealer.hand.hand_value),
-                  "Better luck next time."]))
+            print(f"Dealer beats {player.name}\'s {phand.hand_value}\
+                with {dealer.hand.hand_value}. Better luck next time.")
             return -1
 
 
@@ -306,13 +303,13 @@ def clean_up_players():
     global player_list
     players_to_remove = []
     for p in player_list:
-        print("%s has $%d" % (p.name, p.money))
+        print(f"{p.name} has ${p.money}")
         if p.money <= 0:
-            print("Sorry, %s, you are out of money. Goodbye" % p.name)
+            print(f"Sorry, {p.name}, you are out of money. Goodbye")
             players_to_remove.append(p)
         else:
             p.reset()
-            print("%s\'s hand has been reset" % p.name)
+            print(f"{p.name}\'s hand has been reset")
     player_list = filter(lambda p: p not in players_to_remove,
                          player_list)
     dealer.hand.reset()
