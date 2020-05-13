@@ -270,7 +270,7 @@ def check_winner(player, hand_number, dealer, dealer_status):
             print(player.name, ": You pushed and have received your bet back.")
             return 0
         else:
-            print(player.name, ": dealer's blackjack means you lose.")
+            print(f"{player.name}: dealer's blackjack means you lose.")
             return -1
     else:
         # Calculate who wins between dealers and players that are still in
@@ -284,7 +284,7 @@ def check_winner(player, hand_number, dealer, dealer_status):
             print(player.name, ": You pushed and have received your bet back.")
             return 0
         else:
-            print(f"Dealer beats {player.name}\'s {phand.hand_value}"+
+            print(f"Dealer beats {player.name}\'s {phand.hand_value} "+
                 f"with {dealer.hand.hand_value}. Better luck next time.")
             return -1
 
@@ -305,10 +305,10 @@ def clean_up_players():
         else:
             p.reset()
             print(f"{p.name}\'s hand has been reset")
-    player_list = filter(lambda p: p not in players_to_remove,
-                         player_list)
+    player_list = list(filter(lambda p: p not in players_to_remove,
+                         player_list))
     dealer.hand.reset()
-    if len(list(player_list)) == 0:
+    if len(player_list) == 0:
         print("It seems all players are out. Goodbye")
         return False
     return True
