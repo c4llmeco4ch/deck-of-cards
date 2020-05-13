@@ -1,4 +1,4 @@
-from .card import Card
+from . import Card
 import random
 
 
@@ -9,12 +9,8 @@ class Deck:
         self.is_empty = False
         self.fill_deck()
 
-    def __str__(self):
-        pDeck = '['
-        for c in self.deck:
-            pDeck = ''.join([pDeck, ' ', c.__repr__(), ' |'])
-        pDeck = pDeck[:len(pDeck) - 1] + ']'
-        return pDeck
+    def __repr__(self):
+        return '[' + (''.join(f' {c} |' for c in self.deck))[:-1] + ']'
 
     def fill_deck(self):
         """Fill the deck and place it in new deck order"""
