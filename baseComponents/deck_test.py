@@ -1,4 +1,4 @@
-from .deck import Deck
+from . import Deck
 
 
 class TestDealCardsFromDeck:
@@ -13,7 +13,7 @@ class TestDealCardsFromDeck:
 
     def test_last_card(self):
         d = Deck()
-        for i in range(len(d.deck) - 1):
+        for _ in range(len(d.deck) - 1):
             d.deal_card()
         assert not d.is_empty
         d.deal_card()
