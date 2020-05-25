@@ -1,7 +1,7 @@
 
 # deck-of-cards
 
-April 1, 2020
+May 25, 2020
 
 [![Build Status](https://travis-ci.com/c4llmeco4ch/deck-of-cards.svg?branch=master)](https://travis-ci.com/c4llmeco4ch/deck-of-cards)
 
