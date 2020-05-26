@@ -1,23 +1,45 @@
 from baseComponents import Card
-from blackjack import BJHand, BJPlayer
+from blackjack import BJPlayer
 import pytest
 
 
 # TODO: Add tests for dealerloop, update compare_to tests
 class TestBets:
 
-    def test_negative_bet(self):
+    @pytest.mark.parametrize('amount, expected',[
+        (-5, False),
+        (101, False),
+        (100, True),
+        (1, True)
+    ])
+    def test_bets(self, amount, expected):
         bjp = BJPlayer("Connor")
-        assert not bjp.place_bet(-5)
+        assert bjp.place_bet(amount) == expected
 
-    def test_too_high_bet(self):
-        bjp = BJPlayer("Me")
-        assert not bjp.place_bet(101)
 
-    def test_exact_high_bet(self):
-        bjp = BJPlayer("Me")
-        assert bjp.place_bet(bjp.money)
+class TestDealingCards:
 
-    def test_exact_low_bet(self):
-        bjp = BJPlayer("Me")
-        assert bjp.place_bet(1)
+    @pytest.mark.parametrize('cards, size, total', [
+        ([2, 2, 4], 1, 8),
+        ([10, 2, 5], 1, 17),
+        ([13, 5, 3], 1, 18),
+        ([12, 11, 1], 1, 21),
+        ([12, 1, 1], 1, 12),
+        ([5, 1, 1, 1, 4], 1, 12),
+        ([1, 4, 1], 3, 16),
+        ([1], 2, 11)
+    ])
+    def test_dealings(self, cards, size, total):
+        p = BJPlayer('Me')
+        for c in cards:
+            p.deal_card(Card(c, 'H'), 0)
+        p.hand[0].are_busted()
+        assert len(p.hand[0].hand_value) == size
+        p.hand[0].stand()
+        assert p.hand[0].hand_value == total
+
+
+class TestSplittingHands:
+
+    def test_proper_splits(self):
+        pass
