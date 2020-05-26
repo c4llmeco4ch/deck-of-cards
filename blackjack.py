@@ -106,6 +106,7 @@ class BJPlayer(Player):
     def deal_card(self, c, hand_number):
         """Player is dealt a card and adds it to his hand"""
         self.hand[hand_number].add_card(c)
+        return self.hand[hand_number]
 
     '''
     * @param card1: The card to be added to the first hand
@@ -121,10 +122,12 @@ class BJPlayer(Player):
         self.hand.append(BJHand())
         self.deal_card(second_card, len(self.hand) - 1)
         self.deal_card(card2, len(self.hand) - 1)
+        return self.hand
 
     def reset(self):
         """Reset the player's hand in case they have multiple from splits."""
         self.hand = [BJHand()]
+        return self.hand
 
 
 class Dealer:
