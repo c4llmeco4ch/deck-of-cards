@@ -42,4 +42,14 @@ class TestDealingCards:
 class TestSplittingHands:
 
     def test_proper_splits(self):
+        player = BJPlayer('Me')
+        player.deal_card(Card(10, 'H'), 0)
+        player.deal_card(Card(10, 'S'), 0)
+        split = player.split_hand(Card(1, 'S'), Card(10,'C'), 0)
+        assert len(split) == 2
+        assert split[0].hand_value == [11, 21]
+        assert split[1].hand_value == [20]
+        assert split[1].can_split()
+
+    def test_cascading_splits(self):
         pass
